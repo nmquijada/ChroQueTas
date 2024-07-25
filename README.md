@@ -12,7 +12,7 @@
 
 Instructions:
 
-```bash
+```
 OBLIGATORY OPTIONS:
     -f/--fungamr        Path to FungAMR database formatted for ChroQueTas
     -g/--genome         Path to the genomes file
