@@ -1,0 +1,2 @@
+Position	Reference	Mutation	Fungicide_resistance
+101	R	C	5-fluorocytosine

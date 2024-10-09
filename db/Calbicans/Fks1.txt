@@ -1,0 +1,21 @@
+Position	Reference	Mutation	Fungicide_resistance
+641	F	-	Caspofungin
+641	F	C	Caspofungin
+641	F	I	Caspofungin
+641	F	L	Anidulafungin,Caspofungin,Micafungin
+641	F	S	Anidulafungin,Caspofungin,Micafungin
+644	L	F	Anidulafungin,Caspofungin,Micafungin
+645	S	C	Anidulafungin,Caspofungin,Micafungin
+645	S	F	Anidulafungin,Caspofungin,Micafungin
+645	S	P	Amphotericin B,Anidulafungin,Caspofungin,Fluconazole,Itraconazole,Micafungin,Posaconazole,Voriconazole
+645	S	S	Anidulafungin,Caspofungin,Micafungin
+645	S	Y	Anidulafungin,Caspofungin,Micafungin
+647	R	G	Anidulafungin,Caspofungin,Micafungin
+648	D	Y	Anidulafungin,Caspofungin,Micafungin
+649	P	H	Anidulafungin,Caspofungin,Micafungin
+649	P	L	Anidulafungin,Caspofungin,Micafungin
+654	S	F	Caspofungin
+654	S	P	Caspofungin,Micafungin
+661	V	F	Amphotericin B,Anidulafungin,Caspofungin,Fluconazole,Itraconazole,Posaconazole,Voriconazole
+1358	W	R	Caspofungin
+1361	R	H	Anidulafungin,Caspofungin,Micafungin

@@ -1,0 +1,2 @@
+Position	Reference	Mutation	Fungicide_resistance
+234	G	S	Fluconazole with CaCl2
