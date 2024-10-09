@@ -3,6 +3,11 @@
 
 \* *Repository under development*
 
+> The current version of the repository contains the software as it was used for the analysis of 46 *Candida albicans* and 144 *Zymoseptoria tritici* genomes as described in the [preprint](https://www.biorxiv.org/content/10.1101/2024.10.07.617009v1).  
+> Further improvements are being prepared and will be uploaded on a regular basis.
+
+<br>
+
 ## Table of contents
 1. [Introduction](#id1)
 2. [Instructions](#id2)
@@ -10,10 +15,23 @@
 4. [Example usage](#id4)
 5. [Citation](#id5)
 
+<br>
+
 ## 1. Introduction<a name="id1"></a>
 
-ChroQueTas (*<ins>Chro</ins>mosome <ins>Que</ins>ry <ins>Ta</ins>rget<ins>s</ins> </ins>*) is a user-friendly software that would allow you to dientify **RAM in fungal genomes**. 
+ChroQueTas (*<ins>Chro</ins>mosome <ins>Que</ins>ry <ins>Ta</ins>rget<ins>s</ins> </ins>*) is a user-friendly software that would allow you to dientify **antimicrobial resistance in fungal genomes**.  
 
+ChroQueTas works in combination to [FungAMR](https://github.com/Landrylab/FungAMR), an outsanding resource for antimicrobial resistance (AMR), that contains 54,666 mutation entries (all classified with the degree of evidence that supports their role in resistance), covering 92 species, 202 genes and 184 fungicides. FungAMR and ChroQueTas have been submitted for publication, where you could read the [preprint](https://www.biorxiv.org/content/10.1101/2024.10.07.617009v1). You can download the whole FungAMR resource from [it's main GitHub repository](https://github.com/Landrylab/FungAMR) and also the formatted one when downloading and installing ChroQueTas.  
+
+With that information contained in [FungAMR](https://github.com/Landrylab/FungAMR), ChroQueTas will:   
+
+- i) extract from the fungal genome the CDS and protein where a point mutation is known to cause AMR in that particular species by using miniprot v0.12-r23750 and the information contained in FungAMR.  
+- ii) evaluate sequence similarity against the reference by using BLASTP and discard low confidence hits (to be specified by the user and the `--min_id`, `--min_cov` flags)
+- iii) deal with potential introns, exons and InDels
+- iv) evaluate amino acid positions between the query and the reference proteins accounting for FungAMR information
+- v) report amino acid changes and InDels that could lead to AMR according to the confidence score in FungAMR
+
+<br> 
 
 ## 2. Instructions<a name="id2"></a>
 
@@ -26,6 +44,8 @@ OBLIGATORY OPTIONS:
                         Options available: 'Calbicans', 'Ztritici'
 
 OTHER OPTIONS:
+    --min_cov           Sequence alignment coverage (percent) required for the target protein to be considered (default=75) <integer>
+    --min_id            Sequence alignment similarity (percent) required for the target protein to be considered (default=75) <integer>
     -t/--threads        Number of threads to use (default=1) <integer>
     -v/--version        Show version
 ```
@@ -33,6 +53,8 @@ OTHER OPTIONS:
 <br>
 
 ## 3. Installation<a name="id3"></a>
+
+> Right now, only installation via source code is available. A conda package and docker container are being prepared and will be released asap
 
 ### 2.1 Via conda
 
