@@ -4,9 +4,9 @@
 # ChroQueTaS #
 ##############
 
-AUTHORS="Narciso M. Quijada, Alejandro J. Alcañiz, David Mendoza-Salido, Sibbe Bakke"
-VERSION="0.1.0"
-LASTMODIF="2024-07-25"
+AUTHORS="Narciso M. Quijada, Alejandro J. Alcañiz, David Mendoza-Salido, Sibbe Bakker"
+VERSION="0.3.2"
+LASTMODIF="2024-10-09"
 
 ChroQueTas=$0
 while [ -h "$ChroQueTas" ]; do # resolve $ChroQueTas until the file is no longer a symlink
@@ -31,7 +31,7 @@ SCHEME=
 COL_RESET=$(tput sgr 0)
 COL_blue=$(tput setaf 4)
 COL_cyan=$(tput setaf 6)
-COL_green="$(tput setaf 2)"
+COL_green=$(tput setaf 2)
 COL_magenta=$(tput setaf 5)
 COL_purple=$(tput setaf 5)
 COL_red=$(tput setaf 1)
@@ -131,11 +131,11 @@ case $ARGS in
         OUTPUT=$2
         shift 2
         if [ -d "${OUTPUT}" ]; then
-            echo -e "\nERROR: ${OUTPUT} already exist! Please check \n"
+            echo -e "\n${COL_red}ERROR: ${OUTPUT} already exist! Please check${COL_RESET}\n"
             exit 1
         fi
     else
-        echo -e '\nERROR: "-o/--output" requires an argument\n'
+        echo -e "\n${COL_red}ERROR: '-o/--output' requires an argument${COL_RESET}\n"
         exit 1
     fi
     ;;
@@ -213,21 +213,36 @@ if [ -z "$FungAMR" ] || [ -z "$INGENOME_PATH" ] || [ -z "$OUTPUT" ] || [ -z "$SC
     fi
 fi
 
+# Check if all mandatory software are installed
+for mysoft in miniprot blastp mafft; do
+    if ! command -v $mysoft &>/dev/null; then
+        echo -e "\n${COL_red}ERROR: ${mysoft} is required and not installed${COL_RESET}\nPlease check the installation instructions in: https://github.com/nmquijada/ChroQueTas"
+        exit 1
+    fi
+done
 
 # Set Working Directory
+mkdir -p $OUTPUT
+if [ ! -d $OUTPUT ]; then
+	echo -e "\n${COL_red}ERROR: $OUTPUT could not be created in the selected location.${COL_RESET}\nPlease check\n"
+	exit 1
+fi
 OUTEMP="$( cd -P "$( dirname "$OUTPUT" )" && pwd )"
 OUTWD="$OUTEMP/$OUTPUT"
-mkdir ${OUTWD}
 
 # Define genome name and extension
 INGENOME_PATH_BASE=$(basename $INGENOME_PATH)
-INGENOME="${INGENOME_PATH_BASE%.*}"
 INGENOME_SUFFIX="${INGENOME_PATH_BASE##*.}" # miniprot works with gz but not with bz2 files
 #INGENOME_SUFFIX="${INGENOME_PATH_BASE#*.}" # fasta.gz
 if [[ "$INGENOME_SUFFIX"  == 'bz2' ]]; then
     echo -e "${COL_red}ERROR: ${INGENOME_PATH} is bzipped!${COL_RESET}\nOnly compressed and/or gzipped files are supported\nYou can uncompress your file by typing:\n\n"
     echo -e "bzip2 -d ${INGENOME_PATH}"
     exit 1
+fi
+if [[ "$INGENOME_SUFFIX"  == 'gz' ]]; then
+    INGENOME="${INGENOME_PATH_BASE%%.*}"
+else
+    INGENOME="${INGENOME_PATH_BASE%.*}"
 fi
 
 # START WORKING... Put ChroQueTas in your life!
@@ -242,25 +257,36 @@ echo -e "\n\n                                                            ...IN Y
 echo -e "\nFour steps and you are there!"
 
 # Define Query protein and loop
+QUERYNUM=$(ls ${FungAMR}/${SCHEME}/*faa | wc -l)
+echo -e "\nThe scheme ${SCHEME} has ${QUERYNUM} proteins associated with AMR\n"
+# parallel?
+mkdir ${OUTWD}/tmp/
 for QUERYPROT_PATH in $(ls ${FungAMR}/${SCHEME}/*faa); do
     QUERYPROT=$(basename ${QUERYPROT_PATH} .faa)
-done # move loop once fixed
+    echo ${QUERYPROT} >> ${OUTWD}/tmp/queries_list.tmp
+done
 
 # 1. Protein prediction and extraction
 echo -e "${COL_yellow}Running protein prediction and extraction (step 1/4)${COL_RESET}"
 # 1.1. Reference genome for miniprot
-mkdir ${OUTWD}/tmp/
 miniprot -t ${NCPUS} -d ${OUTWD}/tmp/${INGENOME}.mpi ${INGENOME_PATH} 2>/dev/null
-prot_query_name="${INGENOME}_${QUERYPROT}"
-miniprot -t ${NCPUS} ${OUTWD}/tmp/${INGENOME}.mpi ${FungAMR}/${SCHEME}/${QUERYPROT}.faa --trans > ${OUTWD}/tmp/${prot_query_name}.tmp 2>/dev/null
-head -n 1 ${OUTWD}/tmp/${prot_query_name}.tmp > ${OUTWD}/${prot_query_name}.paf
-tail -n+2 ${OUTWD}/tmp/${prot_query_name}.tmp | grep "^\#\#STA" | tr '\t' '\n' | sed "s/^##STA/>${prot_query_name}/" > ${OUTWD}/${prot_query_name}.faa
-#rm ${OUTWD}/tmp/${prot_query_name}.tmp
-## --> Check if paf and faa files are empty
-if [ -s "${OUTWD}/${prot_query_name}.faa" ] && [ -s "${OUTWD}/${prot_query_name}.paf" ]; then
+for QUERYPROT in $(<${OUTWD}/tmp/queries_list.tmp); do
+    prot_query_name="${INGENOME}_${QUERYPROT}"
+    miniprot -t ${NCPUS} ${OUTWD}/tmp/${INGENOME}.mpi ${FungAMR}/${SCHEME}/${QUERYPROT}.faa --trans > ${OUTWD}/tmp/${prot_query_name}.tmp 2>/dev/null
+    head -n 1 ${OUTWD}/tmp/${prot_query_name}.tmp > ${OUTWD}/${prot_query_name}.paf
+    tail -n+2 ${OUTWD}/tmp/${prot_query_name}.tmp | grep "^\#\#STA" | tr '\t' '\n' | sed "s/^##STA/>${prot_query_name}/" > ${OUTWD}/${prot_query_name}.faa
+    #rm ${OUTWD}/tmp/${prot_query_name}.tmp
+    ## --> Check if paf and faa files are empty
+    if [ ! -s "${OUTWD}/${prot_query_name}.faa" ] || [ ! -s "${OUTWD}/${prot_query_name}.paf" ]; then
+        echo -e "${COL_red}ERROR: We could not extract ${QUERYPROT} from the genome...\nProtein will be discarded for further screening${COL_RESET}"
+        sed -i "s/${QUERYPROT}//" ${OUTWD}/tmp/queries_list.tmp; sed -i "/^$/d" ${OUTWD}/tmp/queries_list.tmp
+        rm ${OUTWD}/${prot_query_name}.faa ${OUTWD}/${prot_query_name}.paf
+    fi
+done
+if [  "$(ls ${OUTWD}/*.faa 2>/dev/null | wc -l )" -gt 0 ] ; then
     echo -e "${COL_green}Done! (step 1/4)${COL_RESET}"
 else
-    echo -e "${COL_red}ERROR: We could not extract ${QUERYPROT} from the genome... Exiting...${COL_RESET}"
+    echo -e "\n${COL_red}ERROR: ChroQuetas could not extract the query proteins from the genome...\nExiting...${COL_RESET}\n"
     exit 1
 fi
 
@@ -268,46 +294,53 @@ fi
 MINID=60
 MINCOV=40
 echo -e "${COL_yellow}Calculating protein similarity with reference (step 2/4)${COL_RESET}"
-blastp -query ${OUTWD}/${prot_query_name}.faa -subject ${FungAMR}/${SCHEME}/${QUERYPROT}.faa -out ${OUTWD}/tmp/${prot_query_name}.blastp.tmp -evalue 1E-10 -outfmt "6 qseqid sseqid qlen slen pident length gaps evalue bitscore qstart qend sstart send"
-cat ${OUTWD}/tmp/${prot_query_name}.blastp.tmp | awk -v OFS="\t" -F "\t" '{print $0, $14=($6-$7)*100/$13}' | awk -v OFS="\t" -v MINID=${MINID} -F "\t" '($3 > MINID)' | awk -v OFS="\t" -v MINCOV=${MINCOV} -F "\t" '($14 > MINCOV)' | sed "1iQuery\tReference\tquery_length\tsubject_length\tperc_identity\tlength_alignment\tgaps\tevalue\tbitscore\tqstart\tqend\tsstart\tsend\tperc_coverage" | awk -v OFS="\t" -F "\t" '{print $1,$2,$5,$14,$8,$3,$4,$6,$7,$9,$10,$11,$12,$13}' > ${OUTWD}/${prot_query_name}.blastp.txt
-# TO DO
+for QUERYPROT in $(<${OUTWD}/tmp/queries_list.tmp); do
+    prot_query_name="${INGENOME}_${QUERYPROT}"
+    blastp -query ${OUTWD}/${prot_query_name}.faa -subject ${FungAMR}/${SCHEME}/${QUERYPROT}.faa -out ${OUTWD}/tmp/${prot_query_name}.blastp.tmp -evalue 1E-10 -outfmt "6 qseqid sseqid qlen slen pident length gaps evalue bitscore qstart qend sstart send"
+    cat ${OUTWD}/tmp/${prot_query_name}.blastp.tmp | awk -v OFS="\t" -F "\t" '{print $0, $14=($6-$7)*100/$13}' | awk -v OFS="\t" -v MINID=${MINID} -F "\t" '($3 > MINID)' | awk -v OFS="\t" -v MINCOV=${MINCOV} -F "\t" '($14 > MINCOV)' | sed "1iQuery\tReference\tquery_length\tsubject_length\tperc_identity\tlength_alignment\tgaps\tevalue\tbitscore\tqstart\tqend\tsstart\tsend\tperc_coverage" | awk -v OFS="\t" -F "\t" '{print $1,$2,$5,$14,$8,$3,$4,$6,$7,$9,$10,$11,$12,$13}' > ${OUTWD}/${prot_query_name}.blastp.txt
+done
 echo -e "${COL_green}Done! (step 2/4)${COL_RESET}"
 
 # 3. MAFFT alignment
 echo -e "${COL_yellow}Performing alignment with reference (step 3/4)${COL_RESET}"
-cat ${FungAMR}/${SCHEME}/${QUERYPROT}.faa ${OUTWD}/${prot_query_name}.faa > ${OUTWD}/tmp/${prot_query_name}_prot2aln.faa
-mafft --thread ${NCPUS} --amino --auto ${OUTWD}/tmp/${prot_query_name}_prot2aln.faa > ${OUTWD}/tmp/${prot_query_name}.aln 2>/dev/null
-multi2single_line_fasta ${OUTWD}/tmp/${prot_query_name}.aln > ${OUTWD}/tmp/${prot_query_name}.oneline.aln
+for QUERYPROT in $(<${OUTWD}/tmp/queries_list.tmp); do
+    prot_query_name="${INGENOME}_${QUERYPROT}"
+    cat ${FungAMR}/${SCHEME}/${QUERYPROT}.faa ${OUTWD}/${prot_query_name}.faa > ${OUTWD}/tmp/${prot_query_name}_prot2aln.faa
+    mafft --thread ${NCPUS} --amino --auto ${OUTWD}/tmp/${prot_query_name}_prot2aln.faa > ${OUTWD}/tmp/${prot_query_name}.aln 2>/dev/null
+    multi2single_line_fasta ${OUTWD}/tmp/${prot_query_name}.aln > ${OUTWD}/tmp/${prot_query_name}.oneline.aln
+done
 echo -e "${COL_green}Done! (step 3/4)${COL_RESET}"
 
 # 4. Look for mutations in AMR positions
 echo -e "${COL_yellow}Inspecting mutations potentially causing AMR (step 4/4)${COL_RESET}"
-align_file=${OUTWD}/tmp/${prot_query_name}.oneline.aln
-chroquetas_db=${FungAMR}/${SCHEME}/${QUERYPROT}.txt
-prot_subject_name=$(head -n 1 ${FungAMR}/${SCHEME}/${QUERYPROT}.faa | sed "s/ .*//" | sed "s/^>//")
-echo -e "Positon\tReference\tQuery\tResult" > ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.tsv
-for mutpos in $(cut -f 1 ${chroquetas_db} | tail -n+2); do
-    amr_mutation=$(grep -P "^${mutpos}\t" ${chroquetas_db} | cut -f 3)
-    reference_aa=$(grep -P "^${mutpos}\t" ${chroquetas_db} | cut -f 2)
-    aa_in_query=$(get_aa_from_pos ${align_file} ${prot_query_name} ${mutpos})
-    aa_in_subject=$(get_aa_from_pos ${align_file} ${prot_subject_name} ${mutpos})
-    if [[ ! -z "${aa_in_query}" ]]; then
-    if [[ "${amr_mutation}" == *"${aa_in_query}"* ]]; then #match if string contains substring, for multiple entries per position in database
-        echo -e "${mutpos}\t${aa_in_subject}\t${aa_in_query}\tAMR MUTATION" >> ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.tsv
-    else
-        if [[ "${aa_in_query}" == "${aa_in_subject}" ]]; then
-        echo -e "${mutpos}\t${aa_in_subject}\t${aa_in_query}\tNo mutation" >> ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.tsv
+for QUERYPROT in $(<${OUTWD}/tmp/queries_list.tmp); do
+    prot_query_name="${INGENOME}_${QUERYPROT}"
+    align_file=${OUTWD}/tmp/${prot_query_name}.oneline.aln
+    chroquetas_db=${FungAMR}/${SCHEME}/${QUERYPROT}.txt
+    prot_subject_name=$(head -n 1 ${FungAMR}/${SCHEME}/${QUERYPROT}.faa | sed "s/ .*//" | sed "s/^>//")
+    echo -e "Position\tReference\tQuery\tResult\tFungicides" > ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.tsv
+    for mutpos in $(cut -f 1 ${chroquetas_db} | tail -n+2 | awk '!x[$0]++'); do
+        amr_mutation=$(grep -P "^${mutpos}\t" ${chroquetas_db} | cut -f 3  | tr '\n' ',' | sed "s/,$/\n/" | sed "s/,//g")
+        reference_aa=$(grep -P "^${mutpos}\t" ${chroquetas_db} | cut -f 2 | awk '!x[$0]++')
+        aa_in_query=$(get_aa_from_pos ${align_file} ${prot_query_name} ${mutpos})
+        aa_in_subject=$(get_aa_from_pos ${align_file} ${prot_subject_name} ${mutpos}) # some subject have AMR, use ${reference_aa} instead for reporting
+        if [[ ! -z "${aa_in_query}" ]]; then
+            if [[ "${amr_mutation}" == *"${aa_in_query}"* ]]; then #match if string contains substring, for multiple entries per position in database
+                echo -e "${mutpos}\t${reference_aa}\t${aa_in_query}\tAMR MUTATION\t$(grep -P "^${mutpos}\t${aa_in_query}\t" <(cut -f 1,3,4 ${chroquetas_db}) | cut -f 3)" >> ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.tsv
+            else
+                if [[ "${aa_in_query}" == "${aa_in_subject}" ]]; then
+                    echo -e "${mutpos}\t${aa_in_subject}\t${aa_in_query}\tNo mutation\tNA" >> ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.tsv
+                else
+                    if [[ "${aa_in_query}" == "-" ]]; then
+                        echo -e "${mutpos}\t${aa_in_subject}\t${aa_in_query}\tNo alignment\tNA" >> ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.tsv
+                    else
+                        echo -e "${mutpos}\t${aa_in_subject}\t${aa_in_query}\tNew mutation\tUnknown" >> ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.tsv
+                    fi
+                fi
+            fi
         else
-        if [[ "${aa_in_query}" == "-" ]]; then
-            echo -e "${mutpos}\t${aa_in_subject}\t${aa_in_query}\tNo alignment" >> ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.tsv
-        else
-            echo -e "${mutpos}\t${aa_in_subject}\t${aa_in_query}\tNew mutation" >> ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.tsv
+            echo -e "${mutpos}\t${aa_in_subject}\t${aa_in_query}\tPosition not found\tNA" >> ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.tsv
         fi
-        fi
-    fi
-    else
-    echo -e "${mutpos}\t${aa_in_subject}\t${aa_in_query}\tPosition not found" >> ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.tsv
-    fi
+    done
 done
-echo -e "${COL_green}Done! (step 4/4)${COL_RESET}\n\nThanks for using ChroQueTas"
-
+echo -e "${COL_green}Done! (step 4/4)${COL_RESET}\n\nThanks for using ChroQueTas!\n"
