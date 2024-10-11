@@ -19,7 +19,7 @@
 
 ## 1. Introduction<a name="id1"></a>
 
-ChroQueTas (*<ins>Chro</ins>mosome <ins>Que</ins>ry <ins>Ta</ins>rget<ins>s</ins> </ins>*) is a user-friendly software that would allow you to dientify **antimicrobial resistance in fungal genomes**.  
+ChroQueTas (*<ins>Chro</ins>mosome <ins>Que</ins>ry <ins>Ta</ins>rget<ins>s</ins> </ins>*) is a user-friendly software that would allow you to dientify **antimicrobial resistance in fungal genomes**.
 
 ChroQueTas works in combination to [FungAMR](https://github.com/Landrylab/FungAMR), an outsanding resource for antimicrobial resistance (AMR), that contains 54,666 mutation entries (all classified with the degree of evidence that supports their role in resistance), covering 92 species, 202 genes and 184 fungicides. FungAMR and ChroQueTas have been submitted for publication, where you could read the [preprint](https://www.biorxiv.org/content/10.1101/2024.10.07.617009v1). You can download the whole FungAMR resource from [it's main GitHub repository](https://github.com/Landrylab/FungAMR) and also the formatted one when downloading and installing ChroQueTas.  
 
