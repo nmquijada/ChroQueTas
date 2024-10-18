@@ -5,8 +5,8 @@
 ##############
 
 AUTHORS="Narciso M. Quijada, Alejandro J. Alcañiz, David Mendoza-Salido, Sibbe Bakker"
-VERSION="0.3.2"
-LASTMODIF="2024-10-09"
+VERSION="0.3.3"
+LASTMODIF="2024-10-18"
 
 ChroQueTas=$0
 while [ -h "$ChroQueTas" ]; do # resolve $ChroQueTas until the file is no longer a symlink
@@ -326,7 +326,7 @@ for QUERYPROT in $(<${OUTWD}/tmp/queries_list.tmp); do
         aa_in_subject=$(get_aa_from_pos ${align_file} ${prot_subject_name} ${mutpos}) # some subject have AMR, use ${reference_aa} instead for reporting
         if [[ ! -z "${aa_in_query}" ]]; then
             if [[ "${amr_mutation}" == *"${aa_in_query}"* ]]; then #match if string contains substring, for multiple entries per position in database
-                echo -e "${mutpos}\t${reference_aa}\t${aa_in_query}\tAMR MUTATION\t$(grep -P "^${mutpos}\t${aa_in_query}\t" <(cut -f 1,3,4 ${chroquetas_db}) | cut -f 3)" >> ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.tsv
+                echo -e "${mutpos}\t${reference_aa}\t${aa_in_query}\tFungAMR MUTATION\t$(grep -P "^${mutpos}\t${aa_in_query}\t" <(cut -f 1,3,4 ${chroquetas_db}) | cut -f 3)" >> ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.tsv
             else
                 if [[ "${aa_in_query}" == "${aa_in_subject}" ]]; then
                     echo -e "${mutpos}\t${aa_in_subject}\t${aa_in_query}\tNo mutation\tNA" >> ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.tsv
