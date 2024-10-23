@@ -5,8 +5,8 @@
 ##############
 
 AUTHORS="Narciso M. Quijada, Alejandro J. Alcañiz, David Mendoza-Salido, Sibbe Bakker"
-VERSION="0.3.3"
-LASTMODIF="2024-10-18"
+VERSION="0.4.2"
+LASTMODIF="2024-10-23"
 
 ChroQueTas=$0
 while [ -h "$ChroQueTas" ]; do # resolve $ChroQueTas until the file is no longer a symlink
@@ -22,6 +22,8 @@ INDIR=
 INGENOME=
 INGENOME_PATH=
 INGENOME_SUFFIX=
+MINID=75
+MINCOV=75
 NCPUS=1
 OUTPUT=
 QUERYPROT=
@@ -75,6 +77,8 @@ ${COL_green}OBLIGATORY OPTIONS:${COL_RESET}
                         Options available: 'Calbicans', 'Ztritici'
 
 ${COL_cyan}OTHER OPTIONS:${COL_RESET}
+    --min_cov           Sequence alignment coverage (percent) required for the target protein to be considered (default=75) <integer>
+    --min_id            Sequence alignment similarity (percent) required for the target protein to be considered (default=75) <integer>
     -t/--threads        Number of threads to use (default=$NCPUS) <integer>
     -v/--version        Show version
 
@@ -137,6 +141,34 @@ case $ARGS in
     else
         echo -e "\n${COL_red}ERROR: '-o/--output' requires an argument${COL_RESET}\n"
         exit 1
+    fi
+    ;;
+    --min_cov)
+    if [ "$2" ]; then
+      if [ "$2" -eq "$2"  ] 2>/dev/null ; then
+        MINCOV=$2
+        shift 2
+      else
+        echo -e "\n${COL_red}ERROR: '--min_cov' requires a numeric argument${COL_RESET}\nargument parsed: $2 \n"
+        exit 1
+      fi
+    else
+      echo -e "\n${COL_red}ERROR: '--min_cov' requires a numeric argument${COL_RESET}\n"
+      exit 1
+    fi
+    ;;
+    --min_id)
+    if [ "$2" ]; then
+      if [ "$2" -eq "$2"  ] 2>/dev/null ; then
+        MINID=$2
+        shift 2
+      else
+        echo -e "\n${COL_red}ERROR: '--min_id' requires a numeric argument${COL_RESET}\nargument parsed: $2 \n"
+        exit 1
+      fi
+    else
+      echo -e "\n${COL_red}ERROR: '--min_id' requires a numeric argument${COL_RESET}\n"
+      exit 1
     fi
     ;;
     -s|--scheme)
@@ -227,8 +259,9 @@ if [ ! -d $OUTPUT ]; then
 	echo -e "\n${COL_red}ERROR: $OUTPUT could not be created in the selected location.${COL_RESET}\nPlease check\n"
 	exit 1
 fi
-OUTEMP="$( cd -P "$( dirname "$OUTPUT" )" && pwd )"
-OUTWD="$OUTEMP/$OUTPUT"
+#OUTEMP="$( cd -P "$( dirname "$OUTPUT" )" && pwd )"
+#OUTWD="$OUTEMP/$OUTPUT"
+OUTWD=$(realpath $OUTPUT)
 
 # Define genome name and extension
 INGENOME_PATH_BASE=$(basename $INGENOME_PATH)
@@ -261,6 +294,10 @@ QUERYNUM=$(ls ${FungAMR}/${SCHEME}/*faa | wc -l)
 echo -e "\nThe scheme ${SCHEME} has ${QUERYNUM} proteins associated with AMR\n"
 # parallel?
 mkdir ${OUTWD}/tmp/
+if [ ! -d "${OUTWD}/tmp/" ]; then
+    echo -e "\n${COL_red}ERROR: $OUTPUT could not be created in the selected location.${COL_RESET}\nPlease check\n"
+    exit 1
+fi
 for QUERYPROT_PATH in $(ls ${FungAMR}/${SCHEME}/*faa); do
     QUERYPROT=$(basename ${QUERYPROT_PATH} .faa)
     echo ${QUERYPROT} >> ${OUTWD}/tmp/queries_list.tmp
@@ -273,14 +310,22 @@ miniprot -t ${NCPUS} -d ${OUTWD}/tmp/${INGENOME}.mpi ${INGENOME_PATH} 2>/dev/nul
 for QUERYPROT in $(<${OUTWD}/tmp/queries_list.tmp); do
     prot_query_name="${INGENOME}_${QUERYPROT}"
     miniprot -t ${NCPUS} ${OUTWD}/tmp/${INGENOME}.mpi ${FungAMR}/${SCHEME}/${QUERYPROT}.faa --trans > ${OUTWD}/tmp/${prot_query_name}.tmp 2>/dev/null
-    head -n 1 ${OUTWD}/tmp/${prot_query_name}.tmp > ${OUTWD}/${prot_query_name}.paf
-    tail -n+2 ${OUTWD}/tmp/${prot_query_name}.tmp | grep "^\#\#STA" | tr '\t' '\n' | sed "s/^##STA/>${prot_query_name}/" > ${OUTWD}/${prot_query_name}.faa
-    #rm ${OUTWD}/tmp/${prot_query_name}.tmp
-    ## --> Check if paf and faa files are empty
-    if [ ! -s "${OUTWD}/${prot_query_name}.faa" ] || [ ! -s "${OUTWD}/${prot_query_name}.paf" ]; then
+    num_features=$(grep -c "^\#\#STA" ${OUTWD}/tmp/${prot_query_name}.tmp)
+    counter=1
+    cp ${OUTWD}/tmp/${prot_query_name}.tmp ${OUTWD}/tmp/${prot_query_name}.miniprot.tmp
+    until [ $counter -gt $num_features ]; do
+        head -n 1 ${OUTWD}/tmp/${prot_query_name}.tmp > ${OUTWD}/${prot_query_name}.${counter}.paf
+        tail -n+2 ${OUTWD}/tmp/${prot_query_name}.tmp | head -n 1 | grep "^\#\#STA" | tr '\t' '\n' | sed "s/^##STA/>${prot_query_name}.${counter}/" > ${OUTWD}/${prot_query_name}.${counter}.faa
+        tail -n+3 ${OUTWD}/tmp/${prot_query_name}.tmp > ${OUTWD}/tmp/file2remove.tmp
+        mv ${OUTWD}/tmp/file2remove.tmp ${OUTWD}/tmp/${prot_query_name}.tmp
+        let counter++
+    done
+    rm ${OUTWD}/tmp/${prot_query_name}.tmp
+    ## --> Check if any paf or faa files were created
+    if [ ! -s "${OUTWD}/${prot_query_name}.1.faa" ] || [ ! -s "${OUTWD}/${prot_query_name}.1.paf" ]; then
         echo -e "${COL_red}ERROR: We could not extract ${QUERYPROT} from the genome...\nProtein will be discarded for further screening${COL_RESET}"
         sed -i "s/${QUERYPROT}//" ${OUTWD}/tmp/queries_list.tmp; sed -i "/^$/d" ${OUTWD}/tmp/queries_list.tmp
-        rm ${OUTWD}/${prot_query_name}.faa ${OUTWD}/${prot_query_name}.paf
+        #rm ${OUTWD}/${prot_query_name}.1.faa ${OUTWD}/${prot_query_name}.1.paf
     fi
 done
 if [  "$(ls ${OUTWD}/*.faa 2>/dev/null | wc -l )" -gt 0 ] ; then
@@ -291,13 +336,20 @@ else
 fi
 
 # 2. Run blast and report stats
-MINID=60
-MINCOV=40
 echo -e "${COL_yellow}Calculating protein similarity with reference (step 2/4)${COL_RESET}"
 for QUERYPROT in $(<${OUTWD}/tmp/queries_list.tmp); do
     prot_query_name="${INGENOME}_${QUERYPROT}"
-    blastp -query ${OUTWD}/${prot_query_name}.faa -subject ${FungAMR}/${SCHEME}/${QUERYPROT}.faa -out ${OUTWD}/tmp/${prot_query_name}.blastp.tmp -evalue 1E-10 -outfmt "6 qseqid sseqid qlen slen pident length gaps evalue bitscore qstart qend sstart send"
-    cat ${OUTWD}/tmp/${prot_query_name}.blastp.tmp | awk -v OFS="\t" -F "\t" '{print $0, $14=($6-$7)*100/$13}' | awk -v OFS="\t" -v MINID=${MINID} -F "\t" '($3 > MINID)' | awk -v OFS="\t" -v MINCOV=${MINCOV} -F "\t" '($14 > MINCOV)' | sed "1iQuery\tReference\tquery_length\tsubject_length\tperc_identity\tlength_alignment\tgaps\tevalue\tbitscore\tqstart\tqend\tsstart\tsend\tperc_coverage" | awk -v OFS="\t" -F "\t" '{print $1,$2,$5,$14,$8,$3,$4,$6,$7,$9,$10,$11,$12,$13}' > ${OUTWD}/${prot_query_name}.blastp.txt
+    #num_features=$(ls ${OUTWD}/${prot_query_name}.+([0-9]).faa | wc -l)
+    num_features=$(ls ${OUTWD}/${prot_query_name}.*.faa | wc -l)
+    counter=1
+    until [ $counter -gt $num_features ]; do
+        blastp -query ${OUTWD}/${prot_query_name}.${counter}.faa -subject ${FungAMR}/${SCHEME}/${QUERYPROT}.faa -out ${OUTWD}/tmp/${prot_query_name}.${counter}.blastp.tmp -evalue 1E-10 -outfmt "6 qseqid sseqid qlen slen pident length gaps evalue bitscore qstart qend sstart send"
+        cat ${OUTWD}/tmp/${prot_query_name}.${counter}.blastp.tmp | awk -v OFS="\t" -F "\t" '{print $0, $14=($6-$7)*100/$13}' | awk -v OFS="\t" -v MINID=${MINID} -F "\t" '($5 > MINID)' | awk -v OFS="\t" -v MINCOV=${MINCOV} -F "\t" '($14 > MINCOV)' | sed "1iQuery\tReference\tquery_length\tsubject_length\tperc_identity\tlength_alignment\tgaps\tevalue\tbitscore\tqstart\tqend\tsstart\tsend\tperc_coverage" | awk -v OFS="\t" -F "\t" '{print $1,$2,$5,$14,$8,$3,$4,$6,$7,$9,$10,$11,$12,$13}' > ${OUTWD}/${prot_query_name}.${counter}.blastp.txt
+        if [[ $(cat ${OUTWD}/${prot_query_name}.${counter}.blastp.txt | wc -l) -lt 2 ]]; then
+            rm ${OUTWD}/${prot_query_name}.${counter}.blastp.txt
+        fi
+        let counter++
+    done
 done
 echo -e "${COL_green}Done! (step 2/4)${COL_RESET}"
 
@@ -305,9 +357,16 @@ echo -e "${COL_green}Done! (step 2/4)${COL_RESET}"
 echo -e "${COL_yellow}Performing alignment with reference (step 3/4)${COL_RESET}"
 for QUERYPROT in $(<${OUTWD}/tmp/queries_list.tmp); do
     prot_query_name="${INGENOME}_${QUERYPROT}"
-    cat ${FungAMR}/${SCHEME}/${QUERYPROT}.faa ${OUTWD}/${prot_query_name}.faa > ${OUTWD}/tmp/${prot_query_name}_prot2aln.faa
-    mafft --thread ${NCPUS} --amino --auto ${OUTWD}/tmp/${prot_query_name}_prot2aln.faa > ${OUTWD}/tmp/${prot_query_name}.aln 2>/dev/null
-    multi2single_line_fasta ${OUTWD}/tmp/${prot_query_name}.aln > ${OUTWD}/tmp/${prot_query_name}.oneline.aln
+    num_features=$(ls ${OUTWD}/${prot_query_name}.*.faa | wc -l)
+    counter=1
+    until [ $counter -gt $num_features ]; do
+        if [ -s "${OUTWD}/${prot_query_name}.${counter}.blastp.txt" ]; then
+            cat ${FungAMR}/${SCHEME}/${QUERYPROT}.faa ${OUTWD}/${prot_query_name}.${counter}.faa > ${OUTWD}/tmp/${prot_query_name}.${counter}_prot2aln.faa
+            mafft --thread ${NCPUS} --amino --auto ${OUTWD}/tmp/${prot_query_name}.${counter}_prot2aln.faa > ${OUTWD}/tmp/${prot_query_name}.${counter}.aln 2>/dev/null
+            multi2single_line_fasta ${OUTWD}/tmp/${prot_query_name}.${counter}.aln > ${OUTWD}/tmp/${prot_query_name}.${counter}.oneline.aln
+        fi
+        let counter++
+    done
 done
 echo -e "${COL_green}Done! (step 3/4)${COL_RESET}"
 
@@ -315,32 +374,40 @@ echo -e "${COL_green}Done! (step 3/4)${COL_RESET}"
 echo -e "${COL_yellow}Inspecting mutations potentially causing AMR (step 4/4)${COL_RESET}"
 for QUERYPROT in $(<${OUTWD}/tmp/queries_list.tmp); do
     prot_query_name="${INGENOME}_${QUERYPROT}"
-    align_file=${OUTWD}/tmp/${prot_query_name}.oneline.aln
-    chroquetas_db=${FungAMR}/${SCHEME}/${QUERYPROT}.txt
-    prot_subject_name=$(head -n 1 ${FungAMR}/${SCHEME}/${QUERYPROT}.faa | sed "s/ .*//" | sed "s/^>//")
-    echo -e "Position\tReference\tQuery\tResult\tFungicides" > ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.tsv
-    for mutpos in $(cut -f 1 ${chroquetas_db} | tail -n+2 | awk '!x[$0]++'); do
-        amr_mutation=$(grep -P "^${mutpos}\t" ${chroquetas_db} | cut -f 3  | tr '\n' ',' | sed "s/,$/\n/" | sed "s/,//g")
-        reference_aa=$(grep -P "^${mutpos}\t" ${chroquetas_db} | cut -f 2 | awk '!x[$0]++')
-        aa_in_query=$(get_aa_from_pos ${align_file} ${prot_query_name} ${mutpos})
-        aa_in_subject=$(get_aa_from_pos ${align_file} ${prot_subject_name} ${mutpos}) # some subject have AMR, use ${reference_aa} instead for reporting
-        if [[ ! -z "${aa_in_query}" ]]; then
-            if [[ "${amr_mutation}" == *"${aa_in_query}"* ]]; then #match if string contains substring, for multiple entries per position in database
-                echo -e "${mutpos}\t${reference_aa}\t${aa_in_query}\tFungAMR MUTATION\t$(grep -P "^${mutpos}\t${aa_in_query}\t" <(cut -f 1,3,4 ${chroquetas_db}) | cut -f 3)" >> ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.tsv
-            else
-                if [[ "${aa_in_query}" == "${aa_in_subject}" ]]; then
-                    echo -e "${mutpos}\t${aa_in_subject}\t${aa_in_query}\tNo mutation\tNA" >> ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.tsv
-                else
-                    if [[ "${aa_in_query}" == "-" ]]; then
-                        echo -e "${mutpos}\t${aa_in_subject}\t${aa_in_query}\tNo alignment\tNA" >> ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.tsv
+    num_features=$(ls ${OUTWD}/${prot_query_name}.*.faa | wc -l)
+    counter=1
+    until [ $counter -gt $num_features ]; do
+        if [ -s "${OUTWD}/${prot_query_name}.${counter}.blastp.txt" ]; then
+            align_file=${OUTWD}/tmp/${prot_query_name}.${counter}.oneline.aln
+            chroquetas_db=${FungAMR}/${SCHEME}/${QUERYPROT}.txt
+            prot_subject_name=$(head -n 1 ${FungAMR}/${SCHEME}/${QUERYPROT}.faa | sed "s/ .*//" | sed "s/^>//")
+            echo -e "Position\tReference\tQuery\tResult\tFungicides" > ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.${counter}.tsv
+            for mutpos in $(cut -f 1 ${chroquetas_db} | tail -n+2 | awk '!x[$0]++'); do
+                amr_mutation=$(grep -P "^${mutpos}\t" ${chroquetas_db} | cut -f 3  | tr '\n' ',' | sed "s/,$/\n/" | sed "s/,//g")
+                reference_aa=$(grep -P "^${mutpos}\t" ${chroquetas_db} | cut -f 2 | awk '!x[$0]++')
+                aa_in_query=$(get_aa_from_pos ${align_file} ${prot_query_name} ${mutpos})
+                aa_in_subject=$(get_aa_from_pos ${align_file} ${prot_subject_name} ${mutpos}) # some subject have AMR, use ${reference_aa} instead for reporting
+                if [[ ! -z "${aa_in_query}" ]]; then
+                    if [[ "${amr_mutation}" == *"${aa_in_query}"* ]]; then #match if string contains substring, for multiple entries per position in database
+                        echo -e "${mutpos}\t${reference_aa}\t${aa_in_query}\tFungAMR MUTATION\t$(grep -P "^${mutpos}\t${aa_in_query}\t" <(cut -f 1,3,4 ${chroquetas_db}) | cut -f 3)" >> ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.${counter}.tsv
                     else
-                        echo -e "${mutpos}\t${aa_in_subject}\t${aa_in_query}\tNew mutation\tUnknown" >> ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.tsv
+                        if [[ "${aa_in_query}" == "${aa_in_subject}" ]]; then
+                            echo -e "${mutpos}\t${aa_in_subject}\t${aa_in_query}\tNo mutation\tNA" >> ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.${counter}.tsv
+                        else
+                            if [[ "${aa_in_query}" == "-" ]]; then
+                                echo -e "${mutpos}\t${aa_in_subject}\t${aa_in_query}\tNo alignment\tNA" >> ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.${counter}.tsv
+                            else
+                                echo -e "${mutpos}\t${aa_in_subject}\t${aa_in_query}\tNew mutation\tUnknown" >> ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.${counter}.tsv
+                            fi
+                        fi
                     fi
+                else
+                    echo -e "${mutpos}\t${aa_in_subject}\t${aa_in_query}\tPosition not found\tNA" >> ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.${counter}.tsv
                 fi
-            fi
-        else
-            echo -e "${mutpos}\t${aa_in_subject}\t${aa_in_query}\tPosition not found\tNA" >> ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.tsv
+            done
         fi
+        let counter++
     done
 done
 echo -e "${COL_green}Done! (step 4/4)${COL_RESET}\n\nThanks for using ChroQueTas!\n"
+echo -e "\n${COL_yellow}PLEASE NOTE: the mutations reported by ChroQueTas are reported as 'FungAMR' mutation and are potential AMR mutations that must be compared with the level of evidence contained in the main database: https://github.com/Landrylab/FungAMR${COL_RESET}\n"
