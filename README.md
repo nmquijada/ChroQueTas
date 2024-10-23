@@ -90,13 +90,13 @@ chmod 700 ChroQueTas/bin/ChroQueTas.sh
 
 ## 4. Example usage<a name="id4"></a>
 
-Test ChroQueTas with a *Zymoseptoria tritici* genome (SRR751313):
+Test ChroQueTas with a *Zymoseptoria tritici* genome (SRR7513134):
 
 ```bash
 ./ChroQueTas/bin/ChroQueTas.sh -f ChroQueTas/db -g ChroQueTas/test_dataset/SRR7513134.fasta.gz -o test -s Ztritici -t 8
 ```
 
-For the docker container, usage is similar
+For the docker container, usage is similar (not available yet)
 
 ```bash
 docker run <image name> -f db -g test_dataset/SRR7513134.fasta.gz -o test -s Ztritici
