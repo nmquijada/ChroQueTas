@@ -99,7 +99,7 @@ chmod 700 ChroQueTas/bin/ChroQueTas.sh
 ## 4. Example usage<a name="id4"></a>
 
 Test ChroQueTas with different *Candida albicans* and *Zymoseptoria tritici* genomes included in the `test_dataset` directory.  
-ChroQueTas has been built and tested on different Linux OS (Debian, Ubuntu and Mint) and hardware infraestructure (including laptop 16GB RAM, 8 CPUs; and servers 124GB RAM 20 CPUs, 1TB RAM 126 CPUs & 2TB RAM, 254 CPUs). **The running time per genome was a few seconds in all cases** (time is gold).
+ChroQueTas has been built and tested on different Linux OS (Debian, Ubuntu and Mint) and hardware infraestructure (including laptop 16GB RAM, 8 CPUs; and servers 124GB RAM 20 CPUs, 1TB RAM 128 CPUs & 2TB RAM, 254 CPUs). **The running time per genome was a few seconds in all cases** (time is gold).
 
 ```bash
 # From source code installation
