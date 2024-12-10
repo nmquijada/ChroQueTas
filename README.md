@@ -22,7 +22,6 @@
 This release will contain:
 - The schemes for **all** the species contained in FungAMR, as described in the [preprint](https://www.biorxiv.org/content/10.1101/2024.10.07.617009v1).
 - The level of evidence for each mutation according to the [FungAMR database](https://github.com/Landrylab/FungAMR).
-- A package available for its installation via conda.  
 
 We will finish the transition in the following days. Thank you for your patience.
 
@@ -82,15 +81,20 @@ You can see an example of ChroQueTas usage in [this section](#id4)
 
 ## 3. Installation<a name="id3"></a>
 
-> Right now, only installation **via source code** is available. A conda package and docker container are being prepared and will be released asap
-
-ChroQueTas has been built and tested on Linux Debian, Ubuntu and Mint.   
+ChroQueTas has been built and tested on Linux Debian, Ubuntu and Mint; under environments with python version 3.8 and 3.9.   
 \* *Incompatibilities might be encountered on MacOS systems, but we are working on them*
 
-### 3.1 Via conda (not available yet)
+### 3.1 Via conda (recommended)
 
 ```bash
-conda install nmquijada::chroquetas
+conda install -c nmquijada chroquetas
+```
+
+In case you find issues with the channels, try first:
+
+```bash
+conda config --add channels nmquijada
+conda config --set channel_priority disabled
 ```
 
 ### 3.2 Via source code
@@ -115,7 +119,7 @@ ChroQueTas has been built and tested on different Linux OS (Debian, Ubuntu and M
 # From source code installation
 
 ## Candida albicans
-/ChroQueTas/bin/ChroQueTas.sh -f ChroQueTas/db -g ChroQueTas/test_dataset/Calbicans_SRR13587609.fasta.gz -s Calbicans --min_id 75 --min_cov 75 -t 2 -o Calbicans_SRR13587609_ChroQueTas
+ChroQueTas.sh -f ChroQueTas/db -g ChroQueTas/test_dataset/Calbicans_SRR13587609.fasta.gz -s Calbicans --min_id 75 --min_cov 75 -t 2 -o Calbicans_SRR13587609_ChroQueTas
 
 ## Zymoseptoria tritici
 ./ChroQueTas/bin/ChroQueTas.sh -f ChroQueTas/db -g ChroQueTas/test_dataset/Ztritici_SRR4907747.fasta.gz -s Ztritici --min_id 75 --min_cov 75 -t 2 -o Ztritici_SRR4907747_ChroQueTas 
