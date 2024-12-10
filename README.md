@@ -6,15 +6,16 @@
 
 \* *Repository under development*
 
-> The current version of the repository contains the software as it was used for the analysis of 46 *Candida albicans* and 144 *Zymoseptoria tritici* genomes as described in the [preprint](https://www.biorxiv.org/content/10.1101/2024.10.07.617009v1).
-> 
-> **PLEASE NOTE** that the potential AMR mutations detected by ChroQueTas are reported as "**FungAMR MUTATION**" and they **must** be checked with the [FungAMR database](https://github.com/Landrylab/FungAMR) in order to infer their level of evidence. The level of evidence for each mutation will be included in the pipeline soon so it will be automatically reported by ChroQueTas. 
-
 <br>
 
 ## IMPORTANT UPDATE (10 Dec 2024)
-We are transitioning to ChroQueTas v0.5.0 that will contain the schemes for **all** the species contained in FungAMR, as described in the [preprint](https://www.biorxiv.org/content/10.1101/2024.10.07.617009v1).  
-Additionally, we are preparing the package to be available **through conda**.  
+**We are transitioning to ChroQueTas v0.5.0!**  
+
+This release will contain:
+- The schemes for **all** the species contained in FungAMR, as described in the [preprint](https://www.biorxiv.org/content/10.1101/2024.10.07.617009v1).
+- The level of evidence for each mutation according to the [FungAMR database](https://github.com/Landrylab/FungAMR).
+- A package available for its installation via conda.  
+
 We will finish the transition in the following days. Thank you for your patience.
 
 <br>
