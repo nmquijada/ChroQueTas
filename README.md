@@ -1,3 +1,7 @@
+[![Anaconda-Server Badge](https://anaconda.org/nmquijada/chroquetas/badges/version.svg)](https://anaconda.org/nmquijada/chroquetas)
+[![Anaconda-Server Badge](https://anaconda.org/nmquijada/chroquetas/badges/latest_release_date.svg)](https://anaconda.org/nmquijada/chroquetas)
+<br>
+
 # ChroQueTas
 
 <img align="right" src="https://github.com/nmquijada/ChroQueTas/blob/images/temprorary_CQTs_logo_AJA.jpeg" width="20%">
