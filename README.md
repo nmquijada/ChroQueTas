@@ -1,4 +1,5 @@
 # ChroQueTas
+<img align="right" src="https://github.com/nmquijada/ChroQueTas-dev/blob/pics/pics/CQTs_logo_AJA.jpeg" width="20%">
 *<ins>Chro</ins>mosome <ins>Que</ins>ry <ins>Ta</ins>rget<ins>s</ins> </ins>*
 
 \* *Repository under development*
@@ -146,3 +147,5 @@ ChroQueTas has been sumbitted for publication together with the FungAMR database
 In the meantime, if you are using ChroQueTas (https://github.com/nmquijada/ChroQueTas) and/or FungAMR (https://github.com/Landrylab/FungAMR), please cite them as:
 
 Bédard, C. et al. FungAMR: A comprehensive portrait of antimicrobial resistance mutations in fungi. bioRxiv, doi: [https://doi.org/10.1101/2024.10.07.617009](https://www.biorxiv.org/content/10.1101/2024.10.07.617009v1)
+
+
