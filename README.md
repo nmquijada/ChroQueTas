@@ -6,6 +6,10 @@
 
 \* *Repository under development*
 
+> The current version of the repository (v.0.4.2) contains the software as it was used for the analysis of 46 *Candida albicans* and 144 *Zymoseptoria tritici* genomes as described in the [preprint](https://www.biorxiv.org/content/10.1101/2024.10.07.617009v1).
+> 
+> **PLEASE NOTE** that the potential AMR mutations detected by ChroQueTas are reported as "**FungAMR MUTATION**" and they **must** be checked with the [FungAMR database](https://github.com/Landrylab/FungAMR) in order to infer their level of evidence. The level of evidence for each mutation will be included in the pipeline soon so it will be automatically reported by ChroQueTas.
+
 <br>
 
 ## IMPORTANT UPDATE (10 Dec 2024)
@@ -57,14 +61,13 @@ You can list the schemes available by typing: `ChroQueTas.sh --list_schemes`
 
 ```
 OBLIGATORY OPTIONS:
+    -f/--fungamr        Path to FungAMR database formatted for ChroQueTas
     -g/--genome         Path to the genome file
     -o/--output         Path and name of the output directory
     -s/--scheme         Type the scheme you would like to conduct the analysis on
-                        To inspect the schemes available use the '--list_schemes' flag
+                        Options available: 'Calbicans', 'Ztritici'
 
 OTHER OPTIONS:
-    -f/--fungamr        Path to FungAMR database formatted for ChroQueTas
-    --list_schemes      Provides the description of species (schemes) that can be screened with ChroQueTas
     --min_cov           Sequence alignment coverage (percent) required for the target protein to be considered (default=75) <integer>
     --min_id            Sequence alignment similarity (percent) required for the target protein to be considered (default=75) <integer>
     -t/--threads        Number of threads to use (default=1) <integer>
@@ -99,9 +102,6 @@ conda install bioconda::blast bioconda::mafft miniprot
 # Download repository
 git clone https://github.com/nmquijada/ChroQueTas.git # while repo is private manual download is required
 chmod 700 ChroQueTas/bin/ChroQueTas.sh
-unzip ChroQueTas/FungAMR_db.zip
-# Clean the house (optional)
-rm -r ChroQueTas/FungAMR_db.zip
 ```
 
 <br>
