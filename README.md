@@ -9,6 +9,13 @@
 
 <br>
 
+## IMPORTANT UPDATE (10 Dec 2024)
+We are transitioning to ChroQueTas v0.5.0 that will contain the schemes for **all** the species contained in FungAMR, as described in the [preprint](https://www.biorxiv.org/content/10.1101/2024.10.07.617009v1).  
+Additionally, we are preparing the package to be available **through conda**.  
+We will finish the transition in the following days. Thank you for your patience.
+
+<br>
+
 ## Table of contents
 1. [Introduction](#id1)
 2. [Instructions](#id2)
@@ -67,23 +74,13 @@ You can see an example of ChroQueTas usage in [this section](#id4)
 ChroQueTas has been built and tested on Linux Debian, Ubuntu and Mint.   
 \* *Incompatibilities might be encountered on MacOS systems, but we are working on them*
 
-### 3.1 Via conda
+### 3.1 Via conda (not available yet)
 
 ```bash
 conda install nmquijada::chroquetas
 ```
 
-### 3.2 Via docker
-
-The docker container can be build using
-
-```shell
-# Download repository
-git clone https://github.com/nmquijada/ChroQueTas.git
-docker build .
-```
-
-### 3.3 Via source code
+### 3.2 Via source code
 
 ```bash
 # Install dependencies
@@ -118,11 +115,6 @@ for spp in Calbicans Ztritici; do
 done
 ```
 
-For the docker container, usage is similar (not available yet)
-
-```bash
-docker run <image name> -f db -g test_dataset/SRR7513134.fasta.gz -o test -s Ztritici
-```
 <br>
 
 ## 5. Expected output<a name="id5"></a>
