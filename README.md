@@ -60,7 +60,7 @@ OBLIGATORY OPTIONS:
     -g/--genome         Path to the genome file
     -o/--output         Path and name of the output directory
     -s/--scheme         Type the scheme you would like to conduct the analysis on
-                        Options available: 'Calbicans', 'Ztritici'
+                        To inspect the schemes available use the '--list_schemes' flag
 
 OTHER OPTIONS:
     -f/--fungamr        Path to FungAMR database formatted for ChroQueTas
