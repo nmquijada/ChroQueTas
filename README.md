@@ -44,17 +44,23 @@ With that information contained in [FungAMR](https://github.com/Landrylab/FungAM
 
 ## 2. Instructions<a name="id2"></a>
 
-ChroQueTas only requires a fungal genome to work (to be specified with `-g/--genome`) and to enable few mandatory options, that include the path to the database (`-f/--fungamr`), the scheme that belongs to the species of the genome to be investigated (`-s/--scheme`) and the desired output directory name (`-o/--output`, ChroQueTas will create the output and will generate all the files there, as explained [here](#id5))   
+> Instructions belonging to v0.5.0. For older versions please check the [releases page](https://github.com/nmquijada/ChroQueTas/releases)
+
+
+ChroQueTas only requires a fungal genome to work (to be specified with `-g/--genome`), the scheme that belongs to the species of the genome to be investigated (`-s/--scheme`) and the desired output directory name (`-o/--output`, ChroQueTas will create the output and will generate all the files there, as explained [here](#id5)).   
+
+You can list the schemes available by typing: `ChroQueTas.sh --list_schemes`  
 
 ```
 OBLIGATORY OPTIONS:
-    -f/--fungamr        Path to FungAMR database formatted for ChroQueTas
     -g/--genome         Path to the genome file
     -o/--output         Path and name of the output directory
     -s/--scheme         Type the scheme you would like to conduct the analysis on
                         Options available: 'Calbicans', 'Ztritici'
 
 OTHER OPTIONS:
+    -f/--fungamr        Path to FungAMR database formatted for ChroQueTas
+    --list_schemes      Provides the description of species (schemes) that can be screened with ChroQueTas
     --min_cov           Sequence alignment coverage (percent) required for the target protein to be considered (default=75) <integer>
     --min_id            Sequence alignment similarity (percent) required for the target protein to be considered (default=75) <integer>
     -t/--threads        Number of threads to use (default=1) <integer>
@@ -89,6 +95,9 @@ conda install bioconda::blast bioconda::mafft miniprot
 # Download repository
 git clone https://github.com/nmquijada/ChroQueTas.git # while repo is private manual download is required
 chmod 700 ChroQueTas/bin/ChroQueTas.sh
+unzip ChroQueTas/FungAMR_db.zip
+# Clean the house (optional)
+rm -r ChroQueTas/FungAMR_db.zip
 ```
 
 <br>
