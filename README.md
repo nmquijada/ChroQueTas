@@ -55,9 +55,8 @@ With that information contained in [FungAMR](https://github.com/Landrylab/FungAM
 > Instructions belonging to v0.5.0. For older versions please check the [releases page](https://github.com/nmquijada/ChroQueTas/releases)
 
 
-ChroQueTas only requires a fungal genome to work (to be specified with `-g/--genome`), the scheme that belongs to the species of the genome to be investigated (`-s/--scheme`) and the desired output directory name (`-o/--output`, ChroQueTas will create the output and will generate all the files there, as explained [here](#id5)).   
+ChroQueTas only requires a fungal genome to work (to be specified with `-g/--genome`) and to enable few mandatory options, that include the path to the database (`-f/--fungamr`), the scheme that belongs to the species of the genome to be investigated (`-s/--scheme`) and the desired output directory name (`-o/--output`, ChroQueTas will create the output and will generate all the files there, as explained [here](#id5))   
 
-You can list the schemes available by typing: `ChroQueTas.sh --list_schemes`  
 
 ```
 OBLIGATORY OPTIONS:
