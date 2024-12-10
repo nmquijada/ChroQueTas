@@ -79,15 +79,13 @@ You can see an example of ChroQueTas usage in [this section](#id4)
 
 ## 3. Installation<a name="id3"></a>
 
-> Right now, only installation **via source code** is available. A conda package and docker container are being prepared and will be released asap
-
-ChroQueTas has been built and tested on Linux Debian, Ubuntu and Mint.   
+ChroQueTas has been built and tested on Linux Debian, Ubuntu and Mint; under environments with python version 3.8 and 3.9.   
 \* *Incompatibilities might be encountered on MacOS systems, but we are working on them*
 
-### 3.1 Via conda (not available yet)
+### 3.1 Via conda (recommended)
 
 ```bash
-conda install nmquijada::chroquetas
+conda install -c nmquijada chroquetas
 ```
 
 ### 3.2 Via source code
@@ -112,20 +110,11 @@ Test ChroQueTas with different *Candida albicans* and *Zymoseptoria tritici* gen
 ChroQueTas has been built and tested on different Linux OS (Debian, Ubuntu and Mint) and hardware infraestructure (including laptop 16GB RAM, 8 CPUs; and servers 124GB RAM 20 CPUs, 1TB RAM 128 CPUs & 2TB RAM, 254 CPUs). **The running time per genome was a few seconds in all cases** (time is gold).
 
 ```bash
-# From source code installation
-
 ## Candida albicans
-/ChroQueTas/bin/ChroQueTas.sh -f ChroQueTas/db -g ChroQueTas/test_dataset/Calbicans_SRR13587609.fasta.gz -s Calbicans --min_id 75 --min_cov 75 -t 2 -o Calbicans_SRR13587609_ChroQueTas
+ChroQueTas.sh -g test_dataset/Calbicans_SRR13587609.fasta.gz -s Candida_albicans --min_id 75 --min_cov 75 -t 2 -o Calbicans_SRR13587609_ChroQueTas
 
 ## Zymoseptoria tritici
-./ChroQueTas/bin/ChroQueTas.sh -f ChroQueTas/db -g ChroQueTas/test_dataset/Ztritici_SRR4907747.fasta.gz -s Ztritici --min_id 75 --min_cov 75 -t 2 -o Ztritici_SRR4907747_ChroQueTas 
-
-# Some wildcards to automate the analysis in all genomes given in the test_dataset
-for spp in Calbicans Ztritici; do
-	for genome in $(ls ChroQueTas/test_dataset/${spp}*.fasta.gz | sed "s#.*/##" | sed "s/.fasta.gz//" | sed "s/${spp}_//"); do
-		./ChroQueTas/bin/ChroQueTas.sh -g ChroQueTas/test_dataset/${spp}_${genome}.fasta.gz -o ${spp}_${genome}_ChroQueTas -f ChroQueTas/db -s ${spp} --min_id 75 --min_cov 75
-	done
-done
+ChroQueTas.sh -g test_dataset/Ztritici_SRR4907747.fasta.gz -s Zymoseptoria_tritici --min_id 75 --min_cov 75 -t 2 -o Ztritici_SRR4907747_ChroQueTas 
 ```
 
 <br>
