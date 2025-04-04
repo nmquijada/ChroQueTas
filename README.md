@@ -16,12 +16,14 @@
 
 <br>
 
-## IMPORTANT UPDATE (10 Dec 2024)
-**We are transitioning to ChroQueTas v0.5.0!**  
+## IMPORTANT UPDATE (4 April 2025)
+**We are transitioning to the next version of ChroQueTas!**  
+Also... **FungARM is now hosted in a dedicated section of the [CARD database web interface](https://card.mcmaster.ca/fungamrhome)!**
 
 This release will contain:
-- The schemes for **all** the species contained in FungAMR, as described in the [preprint](https://www.biorxiv.org/content/10.1101/2024.10.07.617009v1).
+- The schemes for 57 species and 210 proteins, as described in the [preprint](https://www.biorxiv.org/content/10.1101/2024.10.07.617009v1).
 - The level of evidence for each mutation according to the [FungAMR database](https://github.com/Landrylab/FungAMR).
+- Automatic selection of the genetic code to consider the CTG clade
 
 We will finish the transition in the following days. Thank you for your patience.
 
