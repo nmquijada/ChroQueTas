@@ -1,12 +1,12 @@
 # ChroQueTas
 
-<img align="right" src="https://github.com/nmquijada/ChroQueTas/blob/images/temprorary_CQTs_logo_AJA.jpeg" width="20%">
-
 *<ins>Chro</ins>mosome <ins>Que</ins>ry <ins>Ta</ins>rget<ins>s</ins> </ins>*  
 
-<br>
+A user-friendly software to perform fungicide resistance screening in fungal genomes  
 
 ## Table of contents
+<img align="right" src="https://github.com/nmquijada/ChroQueTas/blob/images/temprorary_CQTs_logo_AJA.jpeg" width="20%">
+
 1. [Introduction](#id1)
 2. [Instructions](#id2)
 3. [Installation](#id3)
