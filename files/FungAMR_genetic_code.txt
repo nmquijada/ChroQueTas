@@ -1,0 +1,58 @@
+Species	Genetic_Code	Notes
+Arthroderma_vanbreuseghemii	1	Standard Code
+Aspergillus_awamori	1	Standard Code
+Aspergillus_fumigatus	1	Standard Code
+Aspergillus_niger	1	Standard Code
+Aspergillus_terreus	1	Standard Code
+Aspergillus_tubingensis	1	Standard Code
+Beauveria_bassiana	1	Standard Code
+Blumeria_graminis	1	Standard Code
+Blumeria_graminis_hordei	1	Standard Code
+Blumeria_graminis_tritici	1	Standard Code
+Botrytis_cinerea	1	Standard Code
+Candida_albicans	12	Alternative Yeast Code
+Candida_dubliniensis	12	Alternative Yeast Code
+Candida_metapsilosis	12	Alternative Yeast Code
+Candida_orthopsilosis	12	Alternative Yeast Code
+Candida_parapsilosis	12	Alternative Yeast Code
+Candida_tropicalis	12	Alternative Yeast Code
+Candidozyma_auris	12	Alternative Yeast Code
+Cercospora_beticola	1	Standard Code
+Clavispora_lusitaniae	12	Alternative Yeast Code
+Colletotrichum_acutatum	1	Standard Code
+Colletotrichum_fructicola	1	Standard Code
+Colletotrichum_gloeosporioides	1	Standard Code
+Colletotrichum_graminicola	1	Standard Code
+Colletotrichum_siamense	1	Standard Code
+Corynespora_cassiicola	1	Standard Code
+Cryptococcus_deuterogattii	1	Standard Code
+Cryptococcus_neoformans	1	Standard Code
+Erysiphe_necator	1	Standard Code
+Fusarium_fujikuroi	1	Standard Code
+Fusarium_graminearum	1	Standard Code
+Fusarium_incarnatum	1	Standard Code
+Fusarium_pseudograminearum	1	Standard Code
+Histoplasma_capsulatum	1	Standard Code
+Kluyveromyces_marxianus	1	Standard Code
+Magnaporthe_grisea	1	Standard Code
+Monilinia_fructicola	1	Standard Code
+Mycosphaerella_fijiensis	1	Standard Code
+Nakaseomyces_glabratus	1	Standard Code
+Passalora_fulva	1	Standard Code
+Phaeosphaeria_nodorum	1	Standard Code
+Phakopsora_pachyrhizi	1	Standard Code
+Pichia_kudriavzevii	1	Standard Code
+Pneumocystis_jirovecii	1	Standard Code
+Puccinia_triticina	1	Standard Code
+Pyrenopeziza_brassicae	1	Standard Code
+Saccharomyces_cerevisiae	1	Standard Code
+Saccharomyces_paradoxus	1	Standard Code
+Tapesia_acuformis	1	Standard Code
+Tapesia_yallundae	1	Standard Code
+Trichophyton_indotineae	1	Standard Code
+Trichophyton_interdigitale	1	Standard Code
+Trichophyton_mentagrophytes	1	Standard Code
+Trichophyton_rubrum	1	Standard Code
+Ustilaginoidea_virens	1	Standard Code
+Venturia_inaequalis	1	Standard Code
+Zymoseptoria_tritici	1	Standard Code
