@@ -90,11 +90,11 @@ conda install -c nmquijada chroquetas
 conda install bioconda::blast bioconda::mafft miniprot
 
 # Download repository
-git clone https://github.com/nmquijada/ChroQueTas.git # while repo is private manual download is required
-chmod 700 ChroQueTas/bin/ChroQueTas.sh
-unzip ChroQueTas/FungAMR_db.zip
+git clone https://github.com/nmquijada/ChroQueTas.git
+chmod 700 ChroQueTas/bin/ChroQueTas.sh 
+tar zxvf ChroQueTas/FungAMR_db.tgz
 # Clean the house (optional)
-rm -r ChroQueTas/FungAMR_db.zip
+rm -r ChroQueTas/FungAMR_db.tgz
 ```
 
 <br>
