@@ -86,13 +86,13 @@ ChroQueTas has been built and tested on Linux Debian, Ubuntu and Mint; under env
 
 ```bash
 conda install -c nmquijada chroquetas
+````
 
 In case you find issues with the channels, try first:
 
 ```bash
 conda config --add channels nmquijada
 conda config --set channel_priority disabled
-
 ```
 
 ### 3.2 Via source code
