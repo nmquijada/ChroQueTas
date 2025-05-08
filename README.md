@@ -1,8 +1,13 @@
+[![Anaconda-Server Badge](https://anaconda.org/nmquijada/chroquetas/badges/version.svg)](https://anaconda.org/nmquijada/chroquetas)
+[![Anaconda-Server Badge](https://anaconda.org/nmquijada/chroquetas/badges/latest_release_date.svg)](https://anaconda.org/nmquijada/chroquetas)
+<br>
+
 # ChroQueTas
 
 *<ins>Chro</ins>mosome <ins>Que</ins>ry <ins>Ta</ins>rget<ins>s</ins> </ins>*  
 
 A user-friendly software to perform fungicide resistance screening in fungal genomes  
+
 
 ## Table of contents
 <img align="right" src="https://github.com/nmquijada/ChroQueTas/blob/images/temprorary_CQTs_logo_AJA.jpeg" width="20%">
@@ -37,6 +42,7 @@ With that information contained in [FungAMR](https://github.com/Landrylab/FungAM
 
 ## 2. Instructions<a name="id2"></a>
 
+
 > The instructions belong to v0.6.0. For older versions please check the [releases page](https://github.com/nmquijada/ChroQueTas/releases)
 
 
@@ -44,8 +50,9 @@ ChroQueTas only requires a fungal genome to work (to be specified with `-g/--gen
 
 You can list the species and proteins available by typing: `ChroQueTas.sh --list_species`  
 
-```
+
 OBLIGATORY OPTIONS:
+    -f/--fungamr        Path to FungAMR database formatted for ChroQueTas
     -g/--genome         Path to the genome file
     -o/--output         Path and name of the output directory
     -s/--species        Type the species you would like to conduct the analysis on
@@ -75,12 +82,17 @@ You can see an example of ChroQueTas usage in [this section](#id4)
 
 ChroQueTas has been built and tested on Linux Debian, Ubuntu and Mint; under environments with python version 3.8 and 3.9.   
 
-
-
 ### 3.1 Via conda (recommended)
 
 ```bash
 conda install -c nmquijada chroquetas
+
+In case you find issues with the channels, try first:
+
+```bash
+conda config --add channels nmquijada
+conda config --set channel_priority disabled
+
 ```
 
 ### 3.2 Via source code
