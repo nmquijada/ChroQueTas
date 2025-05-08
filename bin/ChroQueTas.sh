@@ -5,8 +5,8 @@
 ##############
 
 AUTHORS="Narciso M. Quijada, Alejandro J. Alcañiz, David Mendoza-Salido, Sibbe Bakker"
-VERSION="0.4.2"
-LASTMODIF="2024-10-23"
+VERSION="0.6.0"
+LASTMODIF="2025-05-08"
 
 ChroQueTas=$0
 while [ -h "$ChroQueTas" ]; do # resolve $ChroQueTas until the file is no longer a symlink
@@ -17,7 +17,7 @@ done
 ChroQueTasDIR="$( cd -P "$( dirname "$ChroQueTas" )" && pwd )"
 
 # WORKNING VARIABLES
-FungAMR=
+FungAMR=${ChroQueTasDIR}/../FungAMR_db
 INDIR=
 INGENOME=
 INGENOME_PATH=
@@ -27,7 +27,8 @@ MINCOV=75
 NCPUS=1
 OUTPUT=
 QUERYPROT=
-SCHEME=
+SPECIES=
+TRANSCODE=
 
 # Message colors
 COL_RESET=$(tput sgr 0)
@@ -42,10 +43,10 @@ COL_yellow=$(tput setaf 3)
 
 # FUNCTIONS
 get_aa_from_pos () {
-    grep -A 1 "$2" $1 | grep -v "$2" | awk "{ print substr( \$0, $3, 1 ) }"
+    grep -A 1 -P "^>${2}" ${1} | grep -vP "^>${2}" | awk "{ print substr( \$0, $3, 1 ) }"
 }
 get_dash_pos () {
-    grep -A 1 "${2}" ${1} | grep -v "${2}" | grep -ob "-" | sed "s/:-$//"
+    grep -A 1 -P "^>${2}" ${1} | grep -vP "^>${2}" | grep -ob "-" | sed "s/:-$//"
 }
 multi2single_line_fasta () {
     cat $1 | awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' | sed "/^$/d"
@@ -70,13 +71,15 @@ Developed by: ${AUTHORS}
 usage: $0 <options>
 
 ${COL_green}OBLIGATORY OPTIONS:${COL_RESET}
-    -f/--fungamr        Path to FungAMR database formatted for ChroQueTas
     -g/--genome         Path to the genomes file
     -o/--output         Path and name of the output directory
-    -s/--scheme         Type the scheme you would like to conduct the analysis on
-                        Options available: 'Calbicans', 'Ztritici'
+    -s/--species        Type the species you would like to conduct the analysis on
+                        To inspect the pecies and proteins available use the '--list_species' flag
 
 ${COL_cyan}OTHER OPTIONS:${COL_RESET}
+    -c/--trans_code     Specify number for alternative Genetic Code, if needed (default= "12" for CTG clade and "1" for other fungi)
+    -f/--fungamr        Path to FungAMR database formatted for ChroQueTas (default=$(realpath ${ChroQueTasDIR}/../FungAMR_db))
+    --list_species      Provides the list of species and proteins that can be screened with ChroQueTas
     --min_cov           Sequence alignment coverage (percent) required for the target protein to be considered (default=75) <integer>
     --min_id            Sequence alignment similarity (percent) required for the target protein to be considered (default=75) <integer>
     -t/--threads        Number of threads to use (default=$NCPUS) <integer>
@@ -100,6 +103,20 @@ do
 ARGS="$1"
 
 case $ARGS in
+    -c|--trans_code)
+    if [ "$2" ]; then
+      if [ "$2" -eq "$2"  ] 2>/dev/null ; then
+        TRANSCODE=$2
+        shift 2
+      else
+        echo -e "\n${COL_red}ERROR: '-c/--trans_code' requires a numeric argument [1-33]${COL_RESET}\nargument parsed: $2 \nPlease take a look at https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi\n"
+        exit 1
+      fi
+    else
+      echo -e "\n${COL_red}ERROR: '-c/--trans_code' requires a numeric argument${COL_RESET}\nPlease take a look at https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi\n"
+      exit 1
+    fi
+    ;;
     -f|--fungamr)
     if [ "$2" ]; then
         FungAMR=$2
@@ -143,6 +160,18 @@ case $ARGS in
         exit 1
     fi
     ;;
+    --list_species)
+    if [ ! -d "$FungAMR" ]; then
+        echo -e "\n${COL_red}ERROR: '-f/--fungamr' database not found!${COL_RESET}\n"
+        exit 1
+    else
+        echo -e "Species\tProteins_to_screen"
+        for species in $(ls ${FungAMR}); do
+            echo -e "${species}\t$(ls ${FungAMR}/${species} | grep "faa" | sed "s/.faa//" | tr '\n' ',' | sed "s/,$/\n/")"
+        done
+        exit 1
+    fi
+    ;;
     --min_cov)
     if [ "$2" ]; then
       if [ "$2" -eq "$2"  ] 2>/dev/null ; then
@@ -171,19 +200,19 @@ case $ARGS in
       exit 1
     fi
     ;;
-    -s|--scheme)
+    -s|--species)
     if [ "$2" ]; then
-        if [ $2 == 'Calbicans' ] || [ $2 == 'Ztritici' ]; then
-            SCHEME=$2
+        if grep -q "${2}" <(ls ${FungAMR}); then
+            SPECIES=$2
             shift 2
         else
-            echo -e "\n${COL_red}ERROR: unknown option for '-s/--scheme'${COL_RESET}"
-			echo -e "Available schemes: Calbicans, Ztritici\nArgument parsed: $2 \n"
+            echo -e "\n${COL_red}ERROR: unknown option for '-s/--species'${COL_RESET}"
+			echo -e "Argument parsed: $2 \nTo inspect the species available use the '--list_species' flag \n"
 		    exit 1
 	    fi
     else
-        echo -e "\n${COL_red}ERROR: '-s/--scheme' requires an argument${COL_RESET}"
-        echo 'Available schemes: Calbicans, Ztritici'
+        echo -e "\n${COL_red}ERROR: '-s/--species' requires an argument${COL_RESET}"
+        echo "To inspect the species available use the '--list_species' flag \n"
         exit 1
     fi
     ;;
@@ -222,7 +251,7 @@ set -- "${POSITIONAL[@]}" #restore positional parameters
 
 
 # CHECK MANDATORY VARIABLES
-if [ -z "$FungAMR" ] || [ -z "$INGENOME_PATH" ] || [ -z "$OUTPUT" ] || [ -z "$SCHEME" ]; then
+if [ -z "$FungAMR" ] || [ -z "$INGENOME_PATH" ] || [ -z "$OUTPUT" ] || [ -z "$SPECIES" ]; then
 	if [ -z "$FungAMR" ]; then
         usage
         echo -e "\n${COL_red}ERROR: '-f/--fungamr' option is needed!${COL_RESET}\n"
@@ -238,10 +267,28 @@ if [ -z "$FungAMR" ] || [ -z "$INGENOME_PATH" ] || [ -z "$OUTPUT" ] || [ -z "$SC
         echo -e "\n${COL_red}ERROR: '-o/--output' option is needed!${COL_RESET}\n"
         exit 1
     fi
-    if [ -z "$SCHEME" ]; then
+    if [ -z "$SPECIES" ]; then
         usage
-        echo -e "\n${COL_red}ERROR: '-s/--scheme' option is needed!${COL_RESET}\n"
+        echo -e "\n${COL_red}ERROR: '-s/--species' option is needed!${COL_RESET}\n"
         exit 1
+    fi
+fi
+## Define TRANSCODE if not specified
+if [ -z "$TRANSCODE" ]; then
+    CTGCLADE=("Candida_albicans" "Candida_dubliniensis" "Candida_metapsilosis" "Candida_orthopsilosis" "Candida_parapsilosis" "Candida_tropicalis" "Candidozyma_auris" "Clavispora_lusitaniae")
+    isCTG=false
+    for CTGspp in "${CTGCLADE[@]}"; do
+        if [[ "$SPECIES" == "$CTGspp" ]]; then
+            isCTG=true
+            break
+        fi
+    done
+    if $isCTG; then
+        trans_code_message=$(echo -e "PLEASE NOTE: as -c/--trans_code has not been specified and $SPECIES belongs to CTG clade, genetic code has been automatically set to "alternative yeast code" (12)")
+        TRANSCODE=12
+    else
+        trans_code_message=$(echo -e "PLEASE NOTE: as -c/--trans_code has not been specified the genetic code has been automatically set to "standard genetic code" (1)")
+        TRANSCODE=1
     fi
 fi
 
@@ -290,15 +337,18 @@ echo -e "\n\n                                                            ...IN Y
 echo -e "\nFour steps and you are there!"
 
 # Define Query protein and loop
-QUERYNUM=$(ls ${FungAMR}/${SCHEME}/*faa | wc -l)
-echo -e "\nThe scheme ${SCHEME} has ${QUERYNUM} proteins associated with AMR\n"
+QUERYNUM=$(ls ${FungAMR}/${SPECIES}/*faa | wc -l)
+echo -e "\nThe species ${SPECIES} has ${QUERYNUM} proteins associated with AMR\n"
+if [[ ! -z $trans_code_message ]]; then
+    echo -e "${trans_code_message}\n"
+fi
 # parallel?
 mkdir ${OUTWD}/tmp/
 if [ ! -d "${OUTWD}/tmp/" ]; then
     echo -e "\n${COL_red}ERROR: $OUTPUT could not be created in the selected location.${COL_RESET}\nPlease check\n"
     exit 1
 fi
-for QUERYPROT_PATH in $(ls ${FungAMR}/${SCHEME}/*faa); do
+for QUERYPROT_PATH in $(ls ${FungAMR}/${SPECIES}/*faa); do
     QUERYPROT=$(basename ${QUERYPROT_PATH} .faa)
     echo ${QUERYPROT} >> ${OUTWD}/tmp/queries_list.tmp
 done
@@ -306,10 +356,10 @@ done
 # 1. Protein prediction and extraction
 echo -e "${COL_yellow}Running protein prediction and extraction (step 1/4)${COL_RESET}"
 # 1.1. Reference genome for miniprot
-miniprot -t ${NCPUS} -d ${OUTWD}/tmp/${INGENOME}.mpi ${INGENOME_PATH} 2>/dev/null
+miniprot -T ${TRANSCODE} -t ${NCPUS} -d ${OUTWD}/tmp/${INGENOME}.mpi ${INGENOME_PATH} 2>/dev/null
 for QUERYPROT in $(<${OUTWD}/tmp/queries_list.tmp); do
     prot_query_name="${INGENOME}_${QUERYPROT}"
-    miniprot -t ${NCPUS} ${OUTWD}/tmp/${INGENOME}.mpi ${FungAMR}/${SCHEME}/${QUERYPROT}.faa --trans > ${OUTWD}/tmp/${prot_query_name}.tmp 2>/dev/null
+    miniprot -T ${TRANSCODE} -t ${NCPUS} ${OUTWD}/tmp/${INGENOME}.mpi ${FungAMR}/${SPECIES}/${QUERYPROT}.faa --trans > ${OUTWD}/tmp/${prot_query_name}.tmp 2>/dev/null
     num_features=$(grep -c "^\#\#STA" ${OUTWD}/tmp/${prot_query_name}.tmp)
     counter=1
     cp ${OUTWD}/tmp/${prot_query_name}.tmp ${OUTWD}/tmp/${prot_query_name}.miniprot.tmp
@@ -343,7 +393,7 @@ for QUERYPROT in $(<${OUTWD}/tmp/queries_list.tmp); do
     num_features=$(ls ${OUTWD}/${prot_query_name}.*.faa | wc -l)
     counter=1
     until [ $counter -gt $num_features ]; do
-        blastp -query ${OUTWD}/${prot_query_name}.${counter}.faa -subject ${FungAMR}/${SCHEME}/${QUERYPROT}.faa -out ${OUTWD}/tmp/${prot_query_name}.${counter}.blastp.tmp -evalue 1E-10 -outfmt "6 qseqid sseqid qlen slen pident length gaps evalue bitscore qstart qend sstart send"
+        blastp -query ${OUTWD}/${prot_query_name}.${counter}.faa -subject ${FungAMR}/${SPECIES}/${QUERYPROT}.faa -out ${OUTWD}/tmp/${prot_query_name}.${counter}.blastp.tmp -evalue 1E-10 -outfmt "6 qseqid sseqid qlen slen pident length gaps evalue bitscore qstart qend sstart send"
         cat ${OUTWD}/tmp/${prot_query_name}.${counter}.blastp.tmp | awk -v OFS="\t" -F "\t" '{print $0, $14=($6-$7)*100/$13}' | awk -v OFS="\t" -v MINID=${MINID} -F "\t" '($5 > MINID)' | awk -v OFS="\t" -v MINCOV=${MINCOV} -F "\t" '($14 > MINCOV)' | sed "1iQuery\tReference\tquery_length\tsubject_length\tperc_identity\tlength_alignment\tgaps\tevalue\tbitscore\tqstart\tqend\tsstart\tsend\tperc_coverage" | awk -v OFS="\t" -F "\t" '{print $1,$2,$5,$14,$8,$3,$4,$6,$7,$9,$10,$11,$12,$13}' > ${OUTWD}/${prot_query_name}.${counter}.blastp.txt
         if [[ $(cat ${OUTWD}/${prot_query_name}.${counter}.blastp.txt | wc -l) -lt 2 ]]; then
             rm ${OUTWD}/${prot_query_name}.${counter}.blastp.txt
@@ -361,7 +411,7 @@ for QUERYPROT in $(<${OUTWD}/tmp/queries_list.tmp); do
     counter=1
     until [ $counter -gt $num_features ]; do
         if [ -s "${OUTWD}/${prot_query_name}.${counter}.blastp.txt" ]; then
-            cat ${FungAMR}/${SCHEME}/${QUERYPROT}.faa ${OUTWD}/${prot_query_name}.${counter}.faa > ${OUTWD}/tmp/${prot_query_name}.${counter}_prot2aln.faa
+            cat ${FungAMR}/${SPECIES}/${QUERYPROT}.faa ${OUTWD}/${prot_query_name}.${counter}.faa > ${OUTWD}/tmp/${prot_query_name}.${counter}_prot2aln.faa
             mafft --thread ${NCPUS} --amino --auto ${OUTWD}/tmp/${prot_query_name}.${counter}_prot2aln.faa > ${OUTWD}/tmp/${prot_query_name}.${counter}.aln 2>/dev/null
             multi2single_line_fasta ${OUTWD}/tmp/${prot_query_name}.${counter}.aln > ${OUTWD}/tmp/${prot_query_name}.${counter}.oneline.aln
         fi
@@ -379,8 +429,8 @@ for QUERYPROT in $(<${OUTWD}/tmp/queries_list.tmp); do
     until [ $counter -gt $num_features ]; do
         if [ -s "${OUTWD}/${prot_query_name}.${counter}.blastp.txt" ]; then
             align_file=${OUTWD}/tmp/${prot_query_name}.${counter}.oneline.aln
-            chroquetas_db=${FungAMR}/${SCHEME}/${QUERYPROT}.txt
-            prot_subject_name=$(head -n 1 ${FungAMR}/${SCHEME}/${QUERYPROT}.faa | sed "s/ .*//" | sed "s/^>//")
+            chroquetas_db=${FungAMR}/${SPECIES}/${QUERYPROT}.txt
+            prot_subject_name=$(head -n 1 ${FungAMR}/${SPECIES}/${QUERYPROT}.faa | sed "s/ .*//" | sed "s/^>//")
             echo -e "Position\tReference\tQuery\tResult\tFungicides" > ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.${counter}.tsv
             for mutpos in $(cut -f 1 ${chroquetas_db} | tail -n+2 | awk '!x[$0]++'); do
                 amr_mutation=$(grep -P "^${mutpos}\t" ${chroquetas_db} | cut -f 3  | tr '\n' ',' | sed "s/,$/\n/" | sed "s/,//g")
@@ -405,9 +455,33 @@ for QUERYPROT in $(<${OUTWD}/tmp/queries_list.tmp); do
                     echo -e "${mutpos}\t${aa_in_subject}\t${aa_in_query}\tPosition not found\tNA" >> ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.${counter}.tsv
                 fi
             done
+            # make summary file
+            for total_mut in $(grep -P "\tFungAMR MUTATION\t" ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.${counter}.tsv | cut -f 1); do
+                echo -e "${QUERYPROT}\t${counter}" >> ${OUTWD}/tmp/1.tmp
+            done
+            grep -P "\tFungAMR MUTATION\t" ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.${counter}.tsv | cut -f 1,2,3,5 >> ${OUTWD}/tmp/2.tmp
+            for total_mut in $(grep -P "\tNew mutation\t" ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.${counter}.tsv | cut -f 1); do
+                echo -e "${QUERYPROT}\t${counter}" >> ${OUTWD}/tmp/1.tmp
+            done
+            grep -P "\tNew mutation\t" ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.${counter}.tsv | cut -f 1,2,3,4 >> ${OUTWD}/tmp/2.tmp
+            if [[ -s "${OUTWD}/tmp/1.tmp" && -s "${OUTWD}/tmp/2.tmp" ]]; then
+                paste ${OUTWD}/tmp/1.tmp ${OUTWD}/tmp/2.tmp >> ${OUTWD}/${INGENOME}.ChroQueTaS.AMR_summary.txt
+                rm ${OUTWD}/tmp/1.tmp ${OUTWD}/tmp/2.tmp
+            fi
         fi
         let counter++
     done
+    if [ -s "${OUTWD}/${INGENOME}.ChroQueTaS.AMR_summary.txt" ]; then
+        echo -e "${QUERYPROT}\t$(grep -P "^${QUERYPROT}\t" ${OUTWD}/${INGENOME}.ChroQueTaS.AMR_summary.txt | grep -vcP "\tNew mutation$")\t$(grep -P "^${QUERYPROT}\t" ${OUTWD}/${INGENOME}.ChroQueTaS.AMR_summary.txt | grep -cP "\tNew mutation$")" >> ${OUTWD}/${INGENOME}.ChroQueTaS.AMR_stats.txt
+    fi
 done
-echo -e "${COL_green}Done! (step 4/4)${COL_RESET}\n\nThanks for using ChroQueTas!\n"
-echo -e "\n${COL_yellow}PLEASE NOTE: the mutations reported by ChroQueTas are reported as 'FungAMR' mutation and are potential AMR mutations that must be compared with the level of evidence contained in the main database: https://github.com/Landrylab/FungAMR${COL_RESET}\n"
+if [[ -s "${OUTWD}/${INGENOME}.ChroQueTaS.AMR_summary.txt" && -s "${OUTWD}/${INGENOME}.ChroQueTaS.AMR_stats.txt" ]]; then
+    sed -i "1iProtein\tFragment\tPosition_reference\tAA_reference\tAA_query\tFungicide_resistance" ${OUTWD}/${INGENOME}.ChroQueTaS.AMR_summary.txt
+    sed -i "1iProtein\tFungAMR_mutations\tNew_mutations" ${OUTWD}/${INGENOME}.ChroQueTaS.AMR_stats.txt
+
+    echo -e "${COL_green}Done! (step 4/4)${COL_RESET}\n\n -FungAMR mutations found: $(tail -n+2 ${OUTWD}/${INGENOME}.ChroQueTaS.AMR_summary.txt | grep -vcP "\tNew mutation$")\n -New mutations found: $(tail -n+2 ${OUTWD}/${INGENOME}.ChroQueTaS.AMR_summary.txt | grep -cP "\tNew mutation$")\n\nThanks for using ChroQueTas!\n"
+else
+    echo "No AMR mutations found in ${INGENOME}" > ${OUTWD}/${INGENOME}.ChroQueTaS.AMR_summary.txt
+    echo -e "${COL_green}Done! (step 4/4)${COL_RESET}\n\nNo mutations found\n\nThanks for using ChroQueTas!\n"
+fi
+echo -e "\n${COL_yellow}PLEASE NOTE: the mutations reported by ChroQueTas must be considered according their degree of evidence, where different combinations might exist.\n\nSee the main repositories for further details:\n -https://github.com/nmquijada/ChroQueTas\n -https://github.com/Landrylab/FungAMR\n -https://card.mcmaster.ca/fungamrhome${COL_RESET}\n"    
