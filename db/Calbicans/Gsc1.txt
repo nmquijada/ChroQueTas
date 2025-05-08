@@ -1,4 +1,0 @@
-Position	Reference	Mutation	Fungicide_resistance
-645	S	P	Anidulafungin,Caspofungin,Micafungin
-649	P	H	Anidulafungin,Caspofungin,Micafungin
-696	M	V	Anidulafungin,Caspofungin,Micafungin

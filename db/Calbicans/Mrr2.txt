@@ -1,6 +1,0 @@
-Position	Reference	Mutation	Fungicide_resistance
-31	H	Y	Fluconazole
-83	T	A	Fluconazole
-144	L	V	Fluconazole
-145	T	A	Fluconazole
-386	T	I	Fluconazole
