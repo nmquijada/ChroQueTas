@@ -50,7 +50,7 @@ ChroQueTas only requires a fungal genome to work (to be specified with `-g/--gen
 
 You can list the species and proteins available by typing: `ChroQueTas.sh --list_species`  
 
-
+```
 OBLIGATORY OPTIONS:
     -f/--fungamr        Path to FungAMR database formatted for ChroQueTas
     -g/--genome         Path to the genome file
@@ -156,7 +156,7 @@ Bédard, C. et al. FungAMR: A comprehensive portrait of antimicrobial resistance
 
 <br>
 
-## 7. License<a name="id6"></a>
+## 7. License<a name="id7"></a>
 
 ChroQuetas and FungAMR are under Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (**CC BY-NC-ND 4.0**) License
 
