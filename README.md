@@ -15,6 +15,7 @@ A user-friendly software to perform fungicide resistance screening in fungal gen
 - Included novel function from `miniprot` that allows choosing the genetic code for translation. The genetic code can be manually selected by the user and the -c/--trans_code flag. By default, the genetic code is automatically set by ChroQueTas according to the -s/--species flag (formerly --scheme, but renamed to avoid [confusions](https://github.com/nmquijada/ChroQueTas/issues/3)), so it would be set to "alternative yeast code" (-c 12) for the species within the CTG clade or to the "standard code" (-c 1) for the other species. You can inspect the default behavior [here](https://raw.githubusercontent.com/nmquijada/ChroQueTas/refs/heads/v0.6.0/files/FungAMR_genetic_code.txt)
 - Reporting of AMR based on the "confidence score" per mutation, as described in the preprint. Learn more about teh confidence score in the [wiki](https://github.com/nmquijada/ChroQueTas/wiki/Confidence-score-for-antimicrobial-resistance)
 - Extended outputs, as described [here](#id5)
+- New [preprint](https://www.biorxiv.org/content/10.1101/2024.10.07.617009v2) available.
 
 <br>
 
@@ -35,7 +36,7 @@ A user-friendly software to perform fungicide resistance screening in fungal gen
 
 **ChroQueTas** (*<ins>Chro</ins>mosome <ins>Que</ins>ry <ins>Ta</ins>rget<ins>s</ins> </ins>*) is a quick and user-friendly software that would allow you to dientify **antimicrobial resistance in fungal genomes** in just a matter of seconds! You just need to provide a fungal genome (in FASTA format, can be gz-compressed) and to set some minimal options.
 
-ChroQueTas works in combination to **[FungAMR](https://card.mcmaster.ca/fungamrhome)**, an outsanding resource for fungicide resistance  that contains 54,666 mutation entries (all classified with the degree of evidence that supports their role in resistance), covering 92 species, 202 genes and 184 fungicides. FungAMR and ChroQueTas have been submitted for publication, where you could read the [preprint](https://www.biorxiv.org/content/10.1101/2024.10.07.617009v1).  
+ChroQueTas works in combination to **[FungAMR](https://card.mcmaster.ca/fungamrhome)**, an outsanding resource for fungicide resistance  that contains 54,666 mutation entries (all classified with the degree of evidence that supports their role in resistance), covering 92 species, 202 genes and 184 fungicides. FungAMR and ChroQueTas have been submitted for publication, where you could read the [preprint](https://www.biorxiv.org/content/10.1101/2024.10.07.617009v2).  
 
 You can screen the **FungAMR** database interactively from its main [web page](https://card.mcmaster.ca/fungamrhome) or download the full content from its [main GitHub repository](https://github.com/Landrylab/FungAMR). The content from FungAMR is also downloaded and formatted automatically when installing ChroQueTas.  
 
@@ -161,7 +162,7 @@ ChroQueTas will look in the genome for the different fungicide-target proteins a
 ChroQueTas has been sumbitted for publication together with the FungAMR database. 
 In the meantime, if you are using ChroQueTas (https://github.com/nmquijada/ChroQueTas) and/or FungAMR (https://github.com/Landrylab/FungAMR), please cite them as:
 
-Bédard, C. et al. FungAMR: A comprehensive portrait of antimicrobial resistance mutations in fungi. bioRxiv, doi: [https://doi.org/10.1101/2024.10.07.617009](https://www.biorxiv.org/content/10.1101/2024.10.07.617009v1)
+Bédard, C. et al. FungAMR: A comprehensive portrait of antimicrobial resistance mutations in fungi. bioRxiv, doi: [https://doi.org/10.1101/2024.10.07.617009](https://www.biorxiv.org/content/10.1101/2024.10.07.617009v2)
 
 <br>
 
