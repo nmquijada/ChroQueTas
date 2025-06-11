@@ -95,7 +95,8 @@ ChroQueTas has been built and tested on Linux Debian, Ubuntu and Mint; under env
 ### 3.1 Via conda (recommended)
 
 ```bash
-conda install -c nmquijada chroquetas
+conda install -c nmquijada chroquetas=0.6
+# force the latest version
 ````
 
 In case you find issues with the channels, try first:
