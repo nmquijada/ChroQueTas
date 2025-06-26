@@ -36,9 +36,13 @@ A user-friendly software to perform fungicide resistance screening in fungal gen
 
 **ChroQueTas** (*<ins>Chro</ins>mosome <ins>Que</ins>ry <ins>Ta</ins>rget<ins>s</ins> </ins>*) is a quick and user-friendly software that would allow you to dientify **antimicrobial resistance in fungal genomes** in just a matter of seconds! You just need to provide a fungal genome (in FASTA format, can be gz-compressed) and to set some minimal options.
 
-ChroQueTas works in combination to **[FungAMR](https://card.mcmaster.ca/fungamrhome)**, an outsanding resource for fungicide resistance  that contains 54,666 mutation entries (all classified with the degree of evidence that supports their role in resistance), covering 92 species, 202 genes and 184 fungicides. FungAMR and ChroQueTas have been submitted for publication, where you could read the [preprint](https://www.biorxiv.org/content/10.1101/2024.10.07.617009v2).  
+ChroQueTas works in combination to the online database **[FungAMR](https://card.mcmaster.ca/fungamrhome)**, an outsanding resource for fungicide resistance that contains 35,792 entries for 208 drugs across 246 genes and 95 species. Entries consist of the gene, location of the mutation, and experimental data on drug susceptibility, with mutations classified using a [confidence score based on the degree of evidence](https://github.com/nmquijada/ChroQueTas/wiki/Confidence-score-for-antimicrobial-resistance) that supports their role in resistance. FungAMR and ChroQueTas have been submitted for publication, where you could read the [preprint](https://www.biorxiv.org/content/10.1101/2024.10.07.617009v2).  
 
 You can screen the **FungAMR** database interactively from its main [web page](https://card.mcmaster.ca/fungamrhome) or download the full content from its [main GitHub repository](https://github.com/Landrylab/FungAMR). The content from FungAMR is also downloaded and formatted automatically when installing ChroQueTas.  
+
+It is **important to note** that the current version of ChroQueTas detects AMR-associated mutations from FungAMR **when** these have been tested to cause resistance by their own (this is, alone and not in combination with other mutations). However, the user can modify the database of ChroQueTas in order to add further mutations to screen, as explaiend in the wiki (**danger zone** == **own risk**). Additionally, further AMR events included in FungAMR, such as "gene duplication/loss", "disruption", "translocation", etc., are not currently reported, but we are working on including as more mechanisms as possible.  
+
+<br>
 
 With that information contained in [FungAMR](https://github.com/Landrylab/FungAMR), ChroQueTas will:   
 
