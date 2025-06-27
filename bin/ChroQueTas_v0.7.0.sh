@@ -5,8 +5,8 @@
 ##############
 
 AUTHORS="Narciso M. Quijada, Alejandro J. Alcañiz, David Mendoza-Salido, Sibbe Bakker"
-VERSION="0.6.0"
-LASTMODIF="2025-05-08"
+VERSION="0.7.0"
+LASTMODIF="2025-06-20"
 
 ChroQueTas=$0
 while [ -h "$ChroQueTas" ]; do # resolve $ChroQueTas until the file is no longer a symlink
