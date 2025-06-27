@@ -20,7 +20,7 @@ A user-friendly software to perform fungicide resistance screening in fungal gen
 <br>
 
 ## Table of contents
-<img align="right" src="https://github.com/nmquijada/ChroQueTas/blob/images/temprorary_CQTs_logo_AJA.jpeg" width="20%">
+<img align="right" src="https://github.com/nmquijada/ChroQueTas/blob/images_files_wiki/CQTs_logo.png" width="20%">
 
 1. [Introduction](#id1)
 2. [Instructions](#id2)
