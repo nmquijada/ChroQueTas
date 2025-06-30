@@ -1,0 +1,224 @@
+Run	Country	Species	Isolation_source	BioSample
+ERR1938042	unknown	Candida glabrata	Unknown	SAMEA103980802
+ERR1938043	unknown	Candida glabrata	Unknown	SAMEA103980803
+ERR1938044	Danmark	Candida glabrata	Blood	SAMEA103980804
+ERR1938047	Danmark	Candida glabrata	Unknown	SAMEA103980807
+ERR1938048	Danmark	Candida glabrata	Blood	SAMEA103980808
+ERR1938050	Danmark	Candida glabrata	Blood	SAMEA103980810
+ERR1938051	Danmark	Candida glabrata	Blood	SAMEA103980811
+ERR1938052	Danmark	Candida glabrata	Blood	SAMEA103980812
+ERR1938053	Danmark	Candida glabrata	Blood	SAMEA103980813
+ERR1938054	Danmark	Candida glabrata	Blood	SAMEA103980814
+ERR1938055	Danmark	Candida glabrata	Lymph node	SAMEA103980815
+ERR1938056	Danmark	Candida glabrata	Palate	SAMEA103980816
+ERR1938059	UK	Candida glabrata	Standard strain	SAMEA103980819
+ERR1938060	Danmark	Candida glabrata	Feces	SAMEA103980820
+ERR1938061	Danmark	Candida glabrata	Throat	SAMEA103980821
+ERR1938062	Danmark	Candida glabrata	Unknown	SAMEA103980822
+ERR1938063	Danmark	Candida glabrata	Gland	SAMEA103980823
+ERR1938066	Danmark	Candida glabrata	Catheter spit	SAMEA103980826
+ERR1938067	Danmark	Candida glabrata	Blood	SAMEA103980827
+ERR1938068	Danmark	Candida glabrata	Feces	SAMEA103980828
+ERR1938069	Danmark	Candida glabrata	Blood	SAMEA103980829
+ERR1938070	Danmark	Candida glabrata	Blood	SAMEA103980830
+ERR1938071	Danmark	Candida glabrata	Blood	SAMEA103980831
+ERR1938072	Danmark	Candida glabrata	Feces	SAMEA103980832
+ERR1938077	Danmark	Candida glabrata	Feces	SAMEA103980837
+ERR1938078	Danmark	Candida glabrata	Blood	SAMEA103980838
+ERR1938079	unknown	Candida glabrata	Feces	SAMEA103980839
+ERR1938080	Danmark	Candida glabrata	Feces	SAMEA103980840
+ERR1938081	Danmark	Candida glabrata	Blood	SAMEA103980841
+SRR13587560	China (Urumqi)	Candida albicans	Blood	SAMN17225155
+SRR13587569	China (Changsha)	Candida albicans	Blood	SAMN17225083
+SRR13587571	China (Qingdao)	Candida albicans	Ascitic fluid	SAMN17225081
+SRR13587575	China (Lanzhou)	Candida albicans	Blood	SAMN17225077
+SRR13587583	China (Nanjing)	Candida albicans	Bile	SAMN17225070
+SRR13587587	China (Changchun)	Candida albicans	Blood	SAMN17225066
+SRR13587591	China (Shenyang)	Candida albicans	Blood	SAMN17225063
+SRR13587609	China (Wenzhou)	Candida albicans	Tissue	SAMN17225046
+SRR13587615	China (Wuhan)	Candida albicans	Ascitic fluid	SAMN17225041
+SRR13587617	China (Wuhan)	Candida albicans	Catheter	SAMN17225039
+SRR13587623	China (Hangzhou)	Candida albicans	Ascitic fluid	SAMN17224818
+SRR13587626	China (Beijing)	Candida albicans	Ascitic fluid	SAMN17225031
+SRR13587657	China (Lishui)	Candida albicans	Pus	SAMN17225003
+SRR13587663	China (Nanjing)	Candida albicans	Pleural fluid	SAMN17224997
+SRR13587668	China (Guangzhou)	Candida albicans	Ascitic fluid	SAMN17224796
+SRR13587672	China (Taizhou)	Candida albicans	Blood	SAMN17224957
+SRR13587692	China (Chongqing)	Candida albicans	Blood	SAMN17224939
+SRR13587728	China (Guangzhou)	Candida albicans	Blood	SAMN17224828
+SRR13587740	China (Kunming)	Candida albicans	Blood	SAMN17225123
+SRR13587756	China (Nanjing)	Candida albicans	Blood	SAMN17224802
+SRR13587758	China (Beijing)	Candida albicans	Blood	SAMN17224872
+SRR13587791	China (Hohhot)	Candida albicans	Blood	SAMN17224918
+SRR13587793	China (Nanjing)	Candida albicans	Pus	SAMN17224916
+SRR13587807	China (Guangzhou)	Candida albicans	Blood	SAMN17224805
+SRR13587814	China (Chengdu)	Candida albicans	Blood	SAMN17224897
+SRR13587833	China (Wuhan)	Candida albicans	Ascitic fluid	SAMN17224813
+SRR13587839	China (Guangzhou)	Candida albicans	Ascitic fluid	SAMN17224978
+SRR13587843	China (Nanning)	Candida albicans	Ascitic fluid	SAMN17224974
+SRR13587848	China (Beijing)	Candida albicans	Venous catheter	SAMN17224970
+SRR13587856	China (Shanghai)	Candida albicans	Pus	SAMN17224963
+SRR13587864	China (Kunming)	Candida albicans	Pus	SAMN17225116
+SRR13587865	China (Kunming)	Candida albicans	Blood	SAMN17225115
+SRR13587870	China (Harbin)	Candida albicans	Ascitic fluid	SAMN17225111
+SRR13587873	China (Harbin)	Candida albicans	Pus	SAMN17225108
+SRR13587889	China (Guangzhou)	Candida albicans	Blood	SAMN17224824
+SRR14381442	UK	Candida glabrata	peripheral blood culture	SAMN18953783
+SRR14381443	UK	Candida glabrata	ascitic fluid	SAMN18953782
+SRR14381444	UK	Candida glabrata	culture	SAMN18953781
+SRR14381445	UK	Candida glabrata	peripheral blood culture	SAMN18953780
+SRR14381446	UK	Candida glabrata	culture	SAMN18953779
+SRR14381449	UK	Candida glabrata	Blood Culture	SAMN18953802
+SRR14381450	UK	Candida glabrata	Blood culture	SAMN18953801
+SRR14381451	UK	Candida glabrata	drain	SAMN18953777
+SRR14381452	UK	Candida glabrata	Culture for ID	SAMN18953800
+SRR14381454	UK	Candida glabrata	central line blood culture	SAMN18953798
+SRR14381458	UK	Candida glabrata	ascitic fluid	SAMN18953776
+SRR14381459	UK	Candida glabrata	venous blood culture	SAMN18953796
+SRR14381460	UK	Candida glabrata	Culture for ID	SAMN18953793
+SRR14381461	UK	Candida glabrata	Culture for ID	SAMN18953792
+SRR14381462	UK	Candida glabrata	Culture for ID	SAMN18953791
+SRR14381463	UK	Candida glabrata	Blood Culture	SAMN18953790
+SRR14381464	UK	Candida glabrata	Blood Culture	SAMN18953788
+SRR14381465	UK	Candida glabrata		SAMN18953787
+SRR14381466	UK	Candida glabrata	wound swab	SAMN18953786
+SRR14381467	UK	Candida glabrata	peripheral blood culture	SAMN18953789
+SRR14381468	UK	Candida glabrata	Fluid	SAMN18953785
+SRR14381469	UK	Candida glabrata	BAL	SAMN18953784
+SRR14381470	UK	Candida glabrata	sputum	SAMN18953775
+SRR1544598	USA	Candida albicans	Oropharanyx	SAMN02980775
+SRR1544616	USA	Candida albicans	Oropharanyx	SAMN02980776
+SRR1544621	USA	Candida albicans	Oropharanyx	SAMN02980777
+SRR1544681	USA	Candida albicans	Oropharanyx	SAMN02980779
+SRR1544691	USA	Candida albicans	Oropharanyx	SAMN02980780
+SRR15498424	Taiwan	Candida glabrata	Mouth	SAMN06233959
+SRR15498425	Australia: Sydney	Candida glabrata	blood	SAMN04457271
+SRR15498426	USA	Candida glabrata	blood	SAMN06115384
+SRR15498427	Belgium	Candida glabrata	stool	SAMN06115077
+SRR15498428	Taiwan	Candida glabrata	Mouth	SAMN06233959
+SRR15498429	USA	Candida glabrata	blood	SAMN06233961
+SRR15498430	USA	Candida glabrata	blood	SAMN06115073
+SRR15498431	France	Candida glabrata	stool	SAMN06233956
+SRR15498432	France	Candida glabrata	stool	SAMN06233956
+SRR15498433	USA	Candida glabrata	blood	SAMN06115384
+SRR15498434	USA	Candida glabrata	blood	SAMN06233926
+SRR15498435	Taiwan	Candida glabrata	Mouth	SAMN06233959
+SRR15498436	Belgium	Candida glabrata	stool	SAMN06115077
+SRR15498437	USA	Candida glabrata	blood	SAMN06115384
+SRR15498438	France	Candida glabrata	stool	SAMN06233956
+SRR15498439	France	Candida glabrata	stool	SAMN06233956
+SRR15498440	USA	Candida glabrata	blood	SAMN06115073
+SRR15498441	Taiwan	Candida glabrata	Mouth	SAMN06233959
+SRR15498442	Taiwan	Candida glabrata	Mouth	SAMN06233959
+SRR15498443	USA	Candida glabrata	blood	SAMN06233961
+SRR15498444	Belgium	Candida glabrata	stool	SAMN06115077
+SRR15498445	USA	Candida glabrata	blood	SAMN06233961
+SRR15498446	USA	Candida glabrata	blood	SAMN06115384
+SRR15498447	France	Candida glabrata	blood	SAMN06233957
+SRR15498449	Australia: Sydney	Candida glabrata	blood	SAMN04457271
+SRR15498451	USA	Candida glabrata	blood	SAMN06115073
+SRR15498452	Belgium	Candida glabrata	stool	SAMN06115077
+SRR15498453	USA	Candida glabrata	blood	SAMN06115384
+SRR15498454	Taiwan	Candida glabrata	Mouth	SAMN06233959
+SRR15498455	France	Candida glabrata	blood	SAMN06233957
+SRR15498456	France	Candida glabrata	stool	SAMN06233956
+SRR15498457	USA	Candida glabrata	blood	SAMN06115073
+SRR15498458	USA	Candida glabrata	blood	SAMN06115073
+SRR15498459	Taiwan	Candida glabrata	Mouth	SAMN06233959
+SRR15498460	France	Candida glabrata	stool	SAMN06233956
+SRR15498461	USA	Candida glabrata	blood	SAMN06233961
+SRR15498462	USA	Candida glabrata	blood	SAMN06115073
+SRR15498464	Belgium	Candida glabrata	stool	SAMN06115077
+SRR15498466	France	Candida glabrata	stool	SAMN06233956
+SRR15498467	USA	Candida glabrata	blood	SAMN06115073
+SRR15498468	Taiwan	Candida glabrata	Mouth	SAMN06233959
+SRR15498471	Australia: Sydney	Candida glabrata	blood	SAMN04457271
+SRR15498473	USA	Candida glabrata	blood	SAMN06115073
+SRR15498474	Australia: Sydney	Candida glabrata	blood	SAMN04457271
+SRR15498475	USA	Candida glabrata	blood	SAMN06233961
+SRR15498476	France	Candida glabrata	stool	SAMN06233956
+SRR15498477	USA	Candida glabrata	blood	SAMN06233961
+SRR15498478	USA	Candida glabrata	blood	SAMN06233961
+SRR15498480	France	Candida glabrata	stool	SAMN06233956
+SRR15498481	USA	Candida glabrata	blood	SAMN06115384
+SRR15498482	France	Candida glabrata	stool	SAMN06233956
+SRR15498483	Australia: Sydney	Candida glabrata	blood	SAMN04457271
+SRR15498484	Belgium	Candida glabrata	stool	SAMN06115077
+SRR15498485	Australia: Sydney	Candida glabrata	blood	SAMN04457271
+SRR15498488	Belgium	Candida glabrata	stool	SAMN06115077
+SRR15498490	France	Candida glabrata	stool	SAMN06233956
+SRR15498491	Taiwan	Candida glabrata	Mouth	SAMN06233959
+SRR15498492	USA	Candida glabrata	blood	SAMN06233961
+SRR15498494	Belgium	Candida glabrata	stool	SAMN06115077
+SRR15498495	Australia: Sydney	Candida glabrata	blood	SAMN04457271
+SRR15498496	USA	Candida glabrata	blood	SAMN06233926
+SRR15498497	Australia: Sydney	Candida glabrata	blood	SAMN04457271
+SRR15498498	Taiwan	Candida glabrata	Mouth	SAMN06233959
+SRR15498499	USA	Candida glabrata	blood	SAMN06115073
+SRR15498500	France	Candida glabrata	stool	SAMN06233956
+SRR15498501	USA	Candida glabrata	blood	SAMN06115384
+SRR15498502	USA	Candida glabrata	blood	SAMN06115384
+SRR15498503	USA	Candida glabrata	blood	SAMN06115073
+SRR1553997	USA	Candida albicans	Oropharanyx	SAMN02980792
+SRR1554081	USA	Candida albicans	Oropharanyx	SAMN02980793
+SRR1554083	USA	Candida albicans	Oropharanyx	SAMN02980795
+SRR1554088	USA	Candida albicans	Oropharanyx	SAMN02980796
+SRR1554177	USA	Candida albicans	Oropharanyx	SAMN02980798
+SRR1554289	USA	Candida albicans	Oropharanyx	SAMN02980803
+SRR1554300	USA	Candida albicans	Oropharanyx	SAMN02980806
+SRR1554302	USA	Candida albicans	Oropharanyx	SAMN02980807
+SRR3146184	Australia: Sydney	Candida glabrata	Blood	SAMN04457271
+SRR3151534	Australia: Sydney	Candida glabrata	Blood	SAMN04457320
+SRR3151582	Australia: Sydney	Candida glabrata	Blood	SAMN04457396
+SRR3154234	Australia: Sydney	Candida glabrata	Blood	SAMN04457318
+SRR3154235	Australia: Sydney	Candida glabrata	Blood	SAMN04457445
+SRR3154236	Australia: Sydney	Candida glabrata	Blood	SAMN04457446
+SRR3154238	Australia: Sydney	Candida glabrata	Blood	SAMN04457449
+SRR4198629	Australia: Sydney	Candida glabrata	Pelvic_tissue	SAMN04457321
+SRR4237306	Australia: Sydney	Candida glabrata	Urine	SAMN04457333
+SRR5239758	France	Candida glabrata	Blood	SAMN06234144
+SRR5239759	Germany	Candida glabrata	Stool	SAMN06234138
+SRR5239760	USA	Candida glabrata	Blood	SAMN06234135
+SRR5239761	USA	Candida glabrata	Blood	SAMN06233986
+SRR5239763	Taiwan	Candida glabrata	Mouth	SAMN06233959
+SRR5239765	France	Candida glabrata	Blood	SAMN06233957
+SRR5239767	France	Candida glabrata	Blood	SAMN06233955
+SRR5239770	Italy	Candida glabrata	Blood	SAMN06233931
+SRR5239772	USA	Candida glabrata	Blood	SAMN06233918
+SRR5239774	USA	Candida glabrata	Blood	SAMN06115384
+SRR5239775	USA	Candida glabrata	Blood	SAMN06115381
+SRR5239778	USA	Candida glabrata	Blood	SAMN06115073
+SRR5239779	USA	Candida glabrata	Blood	SAMN06115072
+SRR5239782	Belgium	Candida glabrata	Mouth	SAMN06114929
+SRR8068013	Australia: Sydney	Candida glabrata	blood	SAMN10245836
+SRR8068015	Australia: Sydney	Candida glabrata	blood	SAMN10245828
+SRR8068016	Australia: Sydney	Candida glabrata	blood	SAMN10245831
+SRR8068019	Australia: Sydney	Candida glabrata	blood	SAMN10245832
+SRR8068021	Australia: Sydney	Candida glabrata	blood	SAMN10245834
+SRR8068022	Australia: Canberra	Candida glabrata	blood	SAMN10245811
+SRR8068023	Australia: Perth	Candida glabrata	blood	SAMN10245810
+SRR8068024	Australia: Melbourne	Candida glabrata	blood	SAMN10245809
+SRR8068025	Australia: Perth	Candida glabrata	blood	SAMN10245808
+SRR8068026	Australia: Melbourne	Candida glabrata	blood	SAMN10245815
+SRR8068028	Australia: Sydney	Candida glabrata	blood	SAMN10245813
+SRR8068029	Australia: Brisbane	Candida glabrata	blood	SAMN10245812
+SRR8068030	Australia: Melbourne	Candida glabrata	blood	SAMN10245817
+SRR8068032	Australia: Sydney	Candida glabrata	Tissue	SAMN10245848
+SRR8068033	Australia: Melbourne	Candida glabrata	blood	SAMN10245807
+SRR8068034	Australia: Melbourne	Candida glabrata	blood	SAMN10245806
+SRR8068035	Australia: Sydney	Candida glabrata	blood	SAMN10245799
+SRR8068037	Australia: Sydney	Candida glabrata	blood	SAMN10245801
+SRR8068038	Australia: Sydney	Candida glabrata	blood	SAMN10245800
+SRR8068040	Australia: Sydney	Candida glabrata	blood	SAMN10245802
+SRR8068042	Australia: Melbourne	Candida glabrata	blood	SAMN10245804
+SRR8068043	Australia: Sydney	Candida glabrata	blood	SAMN10245826
+SRR8068047	Australia: Sydney	Candida glabrata	blood	SAMN10245818
+SRR8068049	Australia: Sydney	Candida glabrata	blood	SAMN10245824
+SRR8068053	Australia: Sydney	Candida glabrata	blood	SAMN10245846
+SRR8068054	Australia: Melbourne	Candida glabrata	blood	SAMN10245847
+SRR8068057	Australia: Sydney	Candida glabrata	blood	SAMN10245840
+SRR8068058	Australia: Sydney	Candida glabrata	blood	SAMN10245841
+SRR8068059	Australia: Sydney	Candida glabrata	blood	SAMN10245842
+SRR8068060	Australia: Sydney	Candida glabrata	blood	SAMN10245843
+SRR8068061	Australia: Sydney	Candida glabrata	blood	SAMN10245844
+SRR8068062	Australia: Sydney	Candida glabrata	blood	SAMN10245845
