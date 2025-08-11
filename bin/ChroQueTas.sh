@@ -478,7 +478,7 @@ if [[ "$INPUT_FORMAT" == "nucl" ]]; then
     fi
 fi
 if [[ "$INPUT_FORMAT" == "prot" ]]; then
-    echo -e "${COL_green}Running protein prediction and extraction not needed... Done! (step 1/4)${COL_RESET}"
+    echo -e "${COL_green}Protein prediction and extraction step not needed... Done! (step 1/4)${COL_RESET}"
 fi
 
 # 2. Run blast and report stats
@@ -521,9 +521,7 @@ if [[ "$INPUT_FORMAT" == "prot" ]]; then
             sed -i "s/${QUERYPROT}//" ${OUTWD}/tmp/queries_list.tmp; sed -i "/^$/d" ${OUTWD}/tmp/queries_list.tmp
         fi
     done
-    if [  "$(ls ${OUTWD}/*.faa 2>/dev/null | wc -l )" -gt 0 ] ; then
-        continue
-    else
+    if [  "$(ls ${OUTWD}/*.faa 2>/dev/null | wc -l )" == 0 ] ; then
         echo -e "\n${COL_yellow}WARNING: ChroQuetas could not extract any query proteins from the proteome...\nExiting...${COL_RESET}\nStill... Thanks for using ChroQueTas!\n"
         exit 1
     fi
@@ -558,6 +556,9 @@ for QUERYPROT in $(<${OUTWD}/tmp/queries_list.tmp); do
             align_file=${OUTWD}/tmp/${prot_query_name}.${counter}.oneline.aln
             chroquetas_db=${FungAMR}/${SPECIES}/${QUERYPROT}.txt
             prot_subject_name=$(head -n 1 ${FungAMR}/${SPECIES}/${QUERYPROT}.faa | sed "s/ .*//" | sed "s/^>//")
+            if [[ "$INPUT_FORMAT" == "prot" ]]; then
+                prot_query_name=$(head -n 1 ${OUTWD}/${prot_query_name}.${counter}.faa | sed "s/ .*//" | sed "s/^>//")
+            fi
             echo -e "Position\tReference\tQuery\tResult\tFungicides" > ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.${counter}.tsv
             for mutpos in $(cut -f 1 ${chroquetas_db} | tail -n+2 | awk '!x[$0]++'); do
                 amr_mutation=$(grep -P "^${mutpos}\t" ${chroquetas_db} | cut -f 3  | tr '\n' ',' | sed "s/,$/\n/" | sed "s/,//g")
