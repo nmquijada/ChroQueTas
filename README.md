@@ -163,9 +163,11 @@ ChroQueTas has been built and tested on different Linux OS (Debian, Ubuntu and M
 ```bash
 ## Candida albicans
 ChroQueTas.sh -g test_dataset/Calbicans_SRR13587609.fasta.gz -s Candida_albicans -o Calbicans_SRR13587609_ChroQueTas
+# Expected output: 3 AMR mutations: Cyp51 A114S and Y257H; Fur1 R101C
 
 ## Zymoseptoria tritici
 ChroQueTas.sh -g test_dataset/Ztritici_SRR4907747.fasta.gz -s Zymoseptoria_tritici -o Ztritici_SRR4907747_ChroQueTas 
+# Expected output: 2 AMR mutations: Cyp51 L50S and Y461S
 ```
 
 <br>
