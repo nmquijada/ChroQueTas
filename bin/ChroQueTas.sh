@@ -491,7 +491,7 @@ if [[ "$INPUT_FORMAT" == "nucl" ]]; then
         counter=1
         until [ $counter -gt $num_features ]; do
             blastp -query ${OUTWD}/${prot_query_name}.${counter}.faa -subject ${FungAMR}/${SPECIES}/${QUERYPROT}.faa -out ${OUTWD}/tmp/${prot_query_name}.${counter}.blastp.tmp -evalue 1E-10 -outfmt "6 qseqid sseqid qlen slen pident length gaps evalue bitscore qstart qend sstart send"
-            cat ${OUTWD}/tmp/${prot_query_name}.${counter}.blastp.tmp | awk -v OFS="\t" -F "\t" '{print $0, $14=($6-$7)*100/$13}' | awk -v OFS="\t" -v MINID=${MINID} -F "\t" '($5 > MINID)' | awk -v OFS="\t" -v MINCOV=${MINCOV} -F "\t" '($14 > MINCOV)' | sed "1iQuery\tReference\tquery_length\tsubject_length\tperc_identity\tlength_alignment\tgaps\tevalue\tbitscore\tqstart\tqend\tsstart\tsend\tperc_coverage" | awk -v OFS="\t" -F "\t" '{print $1,$2,$5,$14,$8,$3,$4,$6,$7,$9,$10,$11,$12,$13}' > ${OUTWD}/${prot_query_name}.${counter}.blastp.txt
+            cat ${OUTWD}/tmp/${prot_query_name}.${counter}.blastp.tmp | awk -v OFS="\t" -F "\t" '{print $0, $14=($6-$7)*100/$4}' | awk -v OFS="\t" -v MINID=${MINID} -F "\t" '($5 > MINID)' | awk -v OFS="\t" -v MINCOV=${MINCOV} -F "\t" '($14 > MINCOV)' | sed "1iQuery\tReference\tquery_length\tsubject_length\tperc_identity\tlength_alignment\tgaps\tevalue\tbitscore\tqstart\tqend\tsstart\tsend\tperc_coverage" | awk -v OFS="\t" -F "\t" '{print $1,$2,$5,$14,$8,$3,$4,$6,$7,$9,$10,$11,$12,$13}' > ${OUTWD}/${prot_query_name}.${counter}.blastp.txt
             if [[ $(cat ${OUTWD}/${prot_query_name}.${counter}.blastp.txt | wc -l) -lt 2 ]]; then
                 rm ${OUTWD}/${prot_query_name}.${counter}.blastp.txt
             fi
@@ -502,7 +502,7 @@ fi
 if [[ "$INPUT_FORMAT" == "prot" ]]; then
     for QUERYPROT in $(<${OUTWD}/tmp/queries_list.tmp); do
         prot_query_name="${INGENOME}_${QUERYPROT}"
-        blastp -query ${INGENOME_PATH} -subject ${FungAMR}/${SPECIES}/${QUERYPROT}.faa -evalue 1E-10 -outfmt "6 qseqid sseqid qlen slen pident length gaps evalue bitscore qstart qend sstart send" | awk -v OFS="\t" -F "\t" '{print $0, $14=($6-$7)*100/$13}' | awk -v OFS="\t" -v MINID=${MINID} -F "\t" '($5 > MINID)' | awk -v OFS="\t" -v MINCOV=${MINCOV} -F "\t" '($14 > MINCOV)' | sed "1iQuery\tReference\tquery_length\tsubject_length\tperc_identity\tlength_alignment\tgaps\tevalue\tbitscore\tqstart\tqend\tsstart\tsend\tperc_coverage" | awk -v OFS="\t" -F "\t" '{print $1,$2,$5,$14,$8,$3,$4,$6,$7,$9,$10,$11,$12,$13}' > ${OUTWD}/tmp/${prot_query_name}.blastp.txt
+        blastp -query ${INGENOME_PATH} -subject ${FungAMR}/${SPECIES}/${QUERYPROT}.faa -evalue 1E-10 -outfmt "6 qseqid sseqid qlen slen pident length gaps evalue bitscore qstart qend sstart send" | awk -v OFS="\t" -F "\t" '{print $0, $14=($6-$7)*100/$4}' | awk -v OFS="\t" -v MINID=${MINID} -F "\t" '($5 > MINID)' | awk -v OFS="\t" -v MINCOV=${MINCOV} -F "\t" '($14 > MINCOV)' | sed "1iQuery\tReference\tquery_length\tsubject_length\tperc_identity\tlength_alignment\tgaps\tevalue\tbitscore\tqstart\tqend\tsstart\tsend\tperc_coverage" | awk -v OFS="\t" -F "\t" '{print $1,$2,$5,$14,$8,$3,$4,$6,$7,$9,$10,$11,$12,$13}' > ${OUTWD}/tmp/${prot_query_name}.blastp.txt
         # Extract individual proteins that gave a hit from the proteome
         if [[ $(cat ${OUTWD}/tmp/${prot_query_name}.blastp.txt | wc -l) -gt 1 ]]; then
             num_features=$(cut -f 1 ${OUTWD}/tmp/${prot_query_name}.blastp.txt | tail -n+2 | wc -l)
