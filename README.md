@@ -10,7 +10,7 @@ A user-friendly software to perform fungicide resistance screening in fungal gen
 
 <br>
 
-## UPDATE! We will be transition to v1.0.0 throughout the day! (2025-08-11)
+## UPDATE! We will be transitioning to v1.0.0 throughout the day! (2025-08-11)
 
 
 <br>
