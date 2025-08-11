@@ -10,12 +10,8 @@ A user-friendly software to perform fungicide resistance screening in fungal gen
 
 <br>
 
-## UPDATE! ChroQueTas v0.6.0 is out! (2025-05-08)
-- Increased FungAMR database with 57 species, 210 proteins and a total of 8,285 mutations associated with AMR (more info can be extracted by using --list_species flag)
-- Included novel function from `miniprot` that allows choosing the genetic code for translation. The genetic code can be manually selected by the user and the -c/--trans_code flag. By default, the genetic code is automatically set by ChroQueTas according to the -s/--species flag (formerly --scheme, but renamed to avoid [confusions](https://github.com/nmquijada/ChroQueTas/issues/3)), so it would be set to "alternative yeast code" (-c 12) for the species within the CTG clade or to the "standard code" (-c 1) for the other species. You can inspect the default behavior [here](https://raw.githubusercontent.com/nmquijada/ChroQueTas/refs/heads/v0.6.0/files/FungAMR_genetic_code.txt)
-- Reporting of AMR based on the "confidence score" per mutation, as described in the preprint. Learn more about teh confidence score in the [wiki](https://github.com/nmquijada/ChroQueTas/wiki/Confidence-score-for-antimicrobial-resistance)
-- Extended outputs, as described [here](#id5)
-- New [preprint](https://www.biorxiv.org/content/10.1101/2024.10.07.617009v2) available.
+## UPDATE! We will be transition to v1.0.0 throughout the day! (2025-08-11)
+
 
 <br>
 
