@@ -1,0 +1,10 @@
+name: ChroQueTas
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - blast
+  - mafft
+  - miniprot
+  - emboss
+  - seqkit
