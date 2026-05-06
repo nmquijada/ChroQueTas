@@ -4,9 +4,9 @@
 # ChroQueTaS #
 ##############
 
-AUTHORS="Narciso M. Quijada, Alejandro J. Alcañiz, David Mendoza-Salido, Sibbe Bakker"
-VERSION="1.0.0"
-LASTMODIF="2025-08-11"
+AUTHORS="Narciso M. Quijada, Alejandro J. Alcañiz, David Mendoza-Salido, Sibbe Bakker, Raquel Barbero-Herranz"
+VERSION="1.0.1"
+LASTMODIF="2026-05-06"
 
 ChroQueTas=$0
 while [ -h "$ChroQueTas" ]; do # resolve $ChroQueTas until the file is no longer a symlink
@@ -44,6 +44,11 @@ COL_white=$(tput setaf 7)
 COL_yellow=$(tput setaf 3)
 
 # FUNCTIONS
+check_InDels_mafft () {
+    local mafft_alignment_fasta="$1"
+    local sequence_id="$2"    
+    grep -A 1 -P "^>${sequence_id}" ${mafft_alignment_fasta} | grep -vP "^>${sequence_id}" | grep -o "-" | wc -l
+}
 get_aa_from_pos () {
     grep -A 1 -P "^>${2}" ${1} | grep -vP "^>${2}" | awk "{ print substr( \$0, $3, 1 ) }"
 }
@@ -448,7 +453,7 @@ done
 if [[ "$INPUT_FORMAT" == "nucl" ]]; then
     echo -e "${COL_yellow}Running protein prediction and extraction (step 1/4)${COL_RESET}"
     # 1.1. Reference genome for miniprot
-    miniprot -T ${TRANSCODE} -G 5000 -t ${NCPUS} -d ${OUTWD}/tmp/${INGENOME}.mpi ${INGENOME_PATH} 2>/dev/null
+    miniprot -T ${TRANSCODE} -t ${NCPUS} -d ${OUTWD}/tmp/${INGENOME}.mpi ${INGENOME_PATH} 2>/dev/null
     for QUERYPROT in $(<${OUTWD}/tmp/queries_list.tmp); do
         prot_query_name="${INGENOME}_${QUERYPROT}"
         miniprot -T ${TRANSCODE} -G 5000 -t ${NCPUS} ${OUTWD}/tmp/${INGENOME}.mpi ${FungAMR}/${SPECIES}/${QUERYPROT}.faa --trans > ${OUTWD}/tmp/${prot_query_name}.tmp 2>/dev/null
@@ -552,10 +557,10 @@ for QUERYPROT in $(<${OUTWD}/tmp/queries_list.tmp); do
     num_features=$(ls ${OUTWD}/${prot_query_name}.*.faa | wc -l)
     counter=1
     until [ $counter -gt $num_features ]; do
-        if [ -s "${OUTWD}/${prot_query_name}.${counter}.blastp.txt" ]; then
-            align_file=${OUTWD}/tmp/${prot_query_name}.${counter}.oneline.aln
-            chroquetas_db=${FungAMR}/${SPECIES}/${QUERYPROT}.txt
-            prot_subject_name=$(head -n 1 ${FungAMR}/${SPECIES}/${QUERYPROT}.faa | sed "s/ .*//" | sed "s/^>//")
+        align_file=${OUTWD}/tmp/${prot_query_name}.${counter}.oneline.aln
+        chroquetas_db=${FungAMR}/${SPECIES}/${QUERYPROT}.txt
+        prot_subject_name=$(head -n 1 ${FungAMR}/${SPECIES}/${QUERYPROT}.faa | sed "s/ .*//" | sed "s/^>//")
+        if [[ -s "${OUTWD}/${prot_query_name}.${counter}.blastp.txt" ]] && [[ $(check_InDels_mafft "$align_file" "$prot_subject_name") -eq 0 ]]; then            
             if [[ "$INPUT_FORMAT" == "prot" ]]; then
                 prot_query_name=$(head -n 1 ${OUTWD}/${prot_query_name}.${counter}.faa | sed "s/ .*//" | sed "s/^>//")
             fi
@@ -596,6 +601,8 @@ for QUERYPROT in $(<${OUTWD}/tmp/queries_list.tmp); do
                 paste ${OUTWD}/tmp/1.tmp ${OUTWD}/tmp/2.tmp >> ${OUTWD}/${INGENOME}.ChroQueTaS.AMR_summary.txt
                 rm ${OUTWD}/tmp/1.tmp ${OUTWD}/tmp/2.tmp
             fi
+        else
+            echo -e "WARNING: genome contains insertions for ${prot_subject_name} and thus AMR are not calculated" > ${OUTWD}/${INGENOME}.ChroQueTaS.${QUERYPROT}.${counter}.tsv
         fi
         let counter++
     done
