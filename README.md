@@ -144,7 +144,12 @@ rm -r ChroQueTas/FungAMR_db.tgz
 ```
 
 ### 3.3 Via Docker
-> Intructions will be added shortly, sorry for the inconveniences
+
+Usage via docker works as follows.
+
+```
+docker run --rm -it $IMAGE_NAME --list_species
+```
 
 <br> 
 
