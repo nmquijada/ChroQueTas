@@ -610,6 +610,8 @@ for QUERYPROT in $(<${OUTWD}/tmp/queries_list.tmp); do
         echo -e "${QUERYPROT}\t$(grep -P "^${QUERYPROT}\t" ${OUTWD}/${INGENOME}.ChroQueTaS.AMR_summary.txt | grep -vcP "\tNew mutation$")\t$(grep -P "^${QUERYPROT}\t" ${OUTWD}/${INGENOME}.ChroQueTaS.AMR_summary.txt | grep -cP "\tNew mutation$")" >> ${OUTWD}/${INGENOME}.ChroQueTaS.AMR_stats.txt
     fi
 done
+## Final cleanup: https://github.com/nmquijada/ChroQueTas/issues/18
+rm -f ${OUTWD}/tmp/${INGENOME}.mpi
 if [[ -s "${OUTWD}/${INGENOME}.ChroQueTaS.AMR_summary.txt" && -s "${OUTWD}/${INGENOME}.ChroQueTaS.AMR_stats.txt" ]]; then
     sed -i "1iProtein\tFragment\tPosition_reference\tAA_reference\tAA_query\tFungicide_resistance" ${OUTWD}/${INGENOME}.ChroQueTaS.AMR_summary.txt
     sed -i "1iProtein\tFungAMR_mutations\tNew_mutations" ${OUTWD}/${INGENOME}.ChroQueTaS.AMR_stats.txt
