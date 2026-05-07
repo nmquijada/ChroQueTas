@@ -11,14 +11,12 @@
 
 A user-friendly CLI software to perform antifungal/fungicide resistance screening in fungal genomes/proteomes  
 
+Read the entire publication here: Bédard, C. et al. FungAMR: a comprehensive database for investigating fungal mutations associated
+with antimicrobial resistance. ***Nature Microbiology*** (2025), https://doi.org/10.1038/s41564-025-02084-7  
+
 <br>
 
-## UPDATE! FungAMR and ChroQueTas paper is out! (2025-08-11)
-
-Read the entire publication here:  
-
-Bédard, C. et al. FungAMR: a comprehensive database for investigating fungal mutations associated
-with antimicrobial resistance. *Nature Microbiology* (2025), https://doi.org/10.1038/s41564-025-02084-7
+The content of this README relates to the **latest release of ChroQueTas**: v1.0.1
 
 <br>
 
