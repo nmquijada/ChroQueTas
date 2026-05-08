@@ -11,14 +11,13 @@
 
 A user-friendly CLI software to perform antifungal/fungicide resistance screening in fungal genomes/proteomes  
 
+Read the entire publication here: Bédard, C. et al. FungAMR: a comprehensive database for investigating fungal mutations associated
+with antimicrobial resistance. ***Nature Microbiology*** (2025), https://doi.org/10.1038/s41564-025-02084-7  
+
 <br>
 
-## UPDATE! FungAMR and ChroQueTas paper is out! (2025-08-11)
-
-Read the entire publication here:  
-
-Bédard, C. et al. FungAMR: a comprehensive database for investigating fungal mutations associated
-with antimicrobial resistance. *Nature Microbiology* (2025), https://doi.org/10.1038/s41564-025-02084-7
+#### UPDATE 8 May 2026: New ChroQueTas release 
+The content of this README relates to the **latest release of ChroQueTas**: v1.0.1
 
 <br>
 
@@ -180,7 +179,7 @@ ChroQueTas.sh -g test_dataset/Ztritici_SRR4907747.fasta.gz -s Zymoseptoria_triti
 ChroQueTas can be run as simple as that... but of course some other options [can be added or modified](#idinstr), including the minimum percentage of identity (`--min_id`) or coverage (`--min_cov`) required for the "potential" query protein to be kept for downstream analysis.  
 By default, we set strict parameters:  `--min_id = 90` and `--min_cov = 75`, with the rationale of achieving confident results values.  
 This values can be modified by the user under certain circumstances, but please <ins>**be cautious**</ins>. Lowering the % coverage threshold might allow you to capture partial proteins resuling from a fragmented genome after assembly. However, lowering the % identity too much might allow to spurious misalignment to potential homologs/paralogs of the query protein that might be available in the genome and for what no AMR information is available, which could lead to misinterpretations of the results.   
-Despite of this, we decided to keep this options open to the user to modify under certain circumstances/aims at **their own risk**, while we recommend caution when interpreting the results.
+Despite of this, we decided to keep this options open to the user to modify under certain circumstances/aims at **their own risk**, while we recommend caution when interpreting the results.  
 
 <br> 
 
