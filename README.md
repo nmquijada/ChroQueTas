@@ -16,6 +16,7 @@ with antimicrobial resistance. ***Nature Microbiology*** (2025), https://doi.org
 
 <br>
 
+#### UPDATE 8 May 2026: New ChroQueTas release 
 The content of this README relates to the **latest release of ChroQueTas**: v1.0.1
 
 <br>
